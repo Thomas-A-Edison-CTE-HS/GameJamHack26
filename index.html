@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" href="4.gif" />
+  <link rel="icon" href="4.png" />
   <title>2026 Games for Change Student Game Jam — Outgrow Hunger</title>
   <meta name="description" content="Event-day hub for the 2026 Games for Change Student Game Jam at Thomas A. Edison CTE HS." />
   <style>
@@ -364,8 +364,7 @@
   <header class="topbar">
     <div class="wrap">
       <div class="brand">
-        <img src="4.gif" alt="G4C logo" class="logo" />
-        <span class="badge">G4C</span>
+        <span class="badge"><img src="4.gif" alt="G4C logo" class="logo" /></span>
         <span>2026 Game Jam Hack</span>
       </div>
       <nav aria-label="Event navigation">
@@ -787,41 +786,30 @@
     // document.getElementById('voteLink').href = "PASTE_GOOGLE_FORM_LINK_HERE";
   </script>
   <script>
-/**
- * Live Agenda (Event Day)
- * - Highlights NOW + NEXT
- * - Countdown to next transition
- * - Updates every 15 seconds
- * 
- * Assumes local device time. If student devices are off-time,
- * the highlight will be off for them. (Usually fine.)
- */
-
 const EVENT_DATE = "2026-03-06"; // YYYY-MM-DD
-const TIMEZONE_NOTE = "Local time"; // purely display text
 
-// Helper: create a Date on EVENT_DATE at HH:MM (24h)
 function atTime(hhmm){
   const [hh, mm] = hhmm.split(":").map(Number);
-  // Use local time on that date
   return new Date(`${EVENT_DATE}T${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}:00`);
 }
 
 const agenda = [
-  { start:"08:00", end:"08:20", title:"Check-in + Settle In", desc:"Grab your seat, sign in, get ready." },
-  { start:"08:20", end:"08:35", title:"Welcome + What Makes a Great Prototype", desc:"What we’re building today + what success looks like." },
-  { start:"08:35", end:"08:55", title:"Warm-Up Challenge", desc:"Quick interactive activity (theme + game design thinking)." },
-  { start:"08:55", end:"09:15", title:"Team Time", desc:"Teams form, roles assigned, meet your teammates." },
-  { start:"09:15", end:"10:00", title:"Speaker Panel + Mini Workshop", desc:"Industry guests + short interactive activity." },
-  { start:"10:00", end:"10:20", title:"Theme Deep Dive: Outgrow Hunger", desc:"Guiding questions + inspiration to choose your focus." },
-  { start:"10:20", end:"11:05", title:"Story + World + Characters", desc:"Sketch + backstory. Make the world feel real." },
-  { start:"11:05", end:"11:15", title:"Brain Break", desc:"Reset and refocus." },
-  { start:"11:15", end:"11:45", title:"Game Design Plan", desc:"Goal, rules, core mechanic, components, win/lose." },
-  { start:"11:45", end:"12:25", title:"Build Sprint #1", desc:"Make it playable first." },
-  { start:"12:25", end:"12:55", title:"Lunch", desc:"Fuel up." },
-  { start:"12:55", end:"13:30", title:"Build Sprint #2 + Prep to Showcase", desc:"Iterate + polish your pitch." },
-  { start:"13:30", end:"14:10", title:"Gallery Walk: Playtest + Feedback", desc:"Present, play, give feedback, vote." },
-  { start:"14:10", end:"14:25", title:"Awards + Wrap-Up", desc:"Celebrate + next steps." }
+  { start:"08:00", end:"08:15", title:"Arrival, Check-In & Setup", desc:"Check-in, name tags, devices out, Wi-Fi check, seating." },
+  { start:"08:15", end:"08:25", title:"Welcome & Framing the Day", desc:"What G4C is, what you’ll create today, AI expectations." },
+  { start:"08:25", end:"08:55", title:"Kahoot: Theme + Game Design (Teams)", desc:"Theme + systems thinking warm-up. Results form teams + roles." },
+  { start:"08:55", end:"09:25", title:"🎤 Guest Speaker Panel: Games, CS & Your Future", desc:"Short panel + Q&A (students submit questions in advance)." },
+  { start:"09:25", end:"09:30", title:"Break", desc:"Quick reset." },
+  { start:"09:30", end:"09:45", title:"Theme Research", desc:"Food systems, ecosystems, community resilience + guiding questions." },
+  { start:"09:45", end:"10:00", title:"Interactive Micro Workshop", desc:"Turn a mechanic into a hunger system (AI demo → human refinement)." },
+  { start:"10:00", end:"10:55", title:"Story, World & Character Design", desc:"Impact statement → sketch characters → AI enhancement + revision." },
+  { start:"10:55", end:"11:10", title:"Brain Break", desc:"Stretch, water, reset." },
+  { start:"11:10", end:"11:25", title:"Game Concept & Core Mechanics", desc:"Goal, core mechanic, win/lose + Parts of a Game worksheet." },
+  { start:"11:25", end:"12:00", title:"Prototype & Early Build", desc:"Rough but playable. One mechanic + one hunger-related system." },
+  { start:"12:00", end:"12:40", title:"Working Lunch", desc:"Eat + keep building (light reset as needed)." },
+  { start:"12:40", end:"13:20", title:"Game Build + Iteration", desc:"Expand prototype + prepare for Gallery Walk. AI allowed with disclosure." },
+  { start:"13:20", end:"14:00", title:"Gallery Walk: Peer Voting + Judge Evaluation", desc:"Carousel format. Rotate host/player roles. 45-sec pitches." },
+  { start:"14:00", end:"14:15", title:"Judges Deliberate + Student Submissions", desc:"Finalize submissions, reflection/exit survey, group photos." },
+  { start:"14:15", end:"14:30", title:"Awards + Wrap-Up + Next Steps", desc:"Winners + deadline reminder + thank-yous." }
 ];
 
 const listEl = document.getElementById("agendaList");
@@ -924,51 +912,43 @@ function updateAgenda(){
   }
 
   // During event: find current block
-  let nowIdx = -1;
-  for (let i=0; i<agenda.length; i++){
-    const s = atTime(agenda[i].start);
-    const e = atTime(agenda[i].end);
-    if (now >= s && now < e){
-      nowIdx = i;
-      break;
-    }
+let nowIdx = -1;
+for (let i = 0; i < agenda.length; i++) {
+  const s = atTime(agenda[i].start);
+  const e = atTime(agenda[i].end);
+  if (now >= s && now < e) {
+    nowIdx = i;
+    break;
   }
+}
 
-  // Find next block
-  let nextIdx = -1;
-  for (let i=0; i<agenda.length; i++){
-    const s = atTime(agenda[i].start);
-    if (now < s){
-      nextIdx = i;
-      break;
-    }
+// Find next block (first one whose start is after now)
+let nextIdx = -1;
+for (let i = 0; i < agenda.length; i++) {
+  const s = atTime(agenda[i].start);
+  if (now < s) {
+    nextIdx = i;
+    break;
   }
+}
 
-  if (nowIdx === -1){
-    // We're between blocks (rare if times have gaps)
-    nowPill.textContent = "NOW: Transition time";
-  } else {
-    nowPill.textContent = `NOW: ${agenda[nowIdx].title}`;
-  }
+if (nowIdx !== -1) {
+  nowPill.textContent = `NOW: ${agenda[nowIdx].title}`;
 
-  if (nextIdx !== -1){
-    nextPill.textContent = `NEXT: ${agenda[nextIdx].title} (${agenda[nextIdx].start})`;
-    const nextStart = atTime(agenda[nextIdx].start);
-    countdownEl.textContent = `Next starts in ${msToCountdown(nextStart - now)}`;
-  } else {
-    nextPill.textContent = "NEXT: —";
-    // countdown to end of current block
-    if (nowIdx !== -1){
-      const end = atTime(agenda[nowIdx].end);
-      countdownEl.textContent = `Ends in ${msToCountdown(end - now)}`;
-    }
-  }
+  const end = atTime(agenda[nowIdx].end);
+  countdownEl.textContent = `Time left: ${msToCountdown(end - now)}`;
+} else {
+  // if you're between blocks (should be rare)
+  nowPill.textContent = "NOW: Transition time";
+  countdownEl.textContent = "Time left: —";
+}
 
-  // If we’re inside a block, countdown to its end is often more useful than next start.
-  if (nowIdx !== -1){
-    const end = atTime(agenda[nowIdx].end);
-    countdownEl.textContent = `Time left: ${msToCountdown(end - now)}`;
-  }
+if (nextIdx !== -1) {
+  nextPill.textContent = `NEXT: ${agenda[nextIdx].title} (${agenda[nextIdx].start})`;
+} else {
+  nextPill.textContent = "NEXT: —";
+}
+
 
   buildList(nowIdx, nextIdx);
 }
