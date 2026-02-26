@@ -45,7 +45,7 @@
       border-bottom:1px solid var(--line);
     }
     /* push main content down so it isn’t hidden under the fixed header and sticky now bar */
-    body{padding-top:128px;}
+    body{padding-top:120px;}
     .topbar .wrap{display:flex;align-items:center;gap:12px}
     .brand{
       display:flex;align-items:center;gap:10px;min-width:220px;
@@ -58,12 +58,12 @@
       display:block;
     }
 
-    /* sticky current agenda bar (below the fixed topbar) */
+    /* sticky current agenda bar (inside the fixed topbar) */
+    .topbar{padding-bottom:56px}
     .currentNow{
-      position:fixed;
-      top:64px;
+      position:absolute;
       left:0;right:0;
-      z-index:19;
+      bottom:0;
       display:flex;
       justify-content:center;
       padding:8px 18px;
@@ -405,9 +405,7 @@
       <div class="pill" id="currentNowPill">NOW</div>
     </div>
   </header>
-
-
-  </div>
+  </header>
 
   <main class="wrap">
     <!-- HERO -->
