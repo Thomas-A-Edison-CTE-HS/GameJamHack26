@@ -479,8 +479,7 @@ nav{
           <div class="toggleRow">
             <strong>Quick Links</strong>
             <div class="mode" aria-label="Page mode toggle">
-              <span id="chipOpen" class="chip active" role="button" tabindex="0">Open Mode</span>
-              <span id="chipEvent" class="chip" role="button" tabindex="0">Event-Day Mode</span>
+              <!-- Mode toggle removed for simplified UI -->
             </div>
           </div>
           <div class="divider"></div>
@@ -838,44 +837,10 @@ nav{
   </main>
 
   <script>
-    // Simple "Event-Day Mode" toggle:
-    // - hides extra blocks
-    // - keeps essentials visible
-    const chipOpen = document.getElementById('chipOpen');
-    const chipEvent = document.getElementById('chipEvent');
-
-    const extraBlock = document.getElementById('extraBlock');
-    const votingBlock = document.getElementById('votingBlock');
-
-    function setMode(mode){
-      const isEvent = mode === 'event';
-      chipOpen.classList.toggle('active', !isEvent);
-      chipEvent.classList.toggle('active', isEvent);
-
-      // hide teacher extras in event mode
-      extraBlock.classList.toggle('hidden', isEvent);
-
-      // In event mode, voting stays visible; you could also hide it until gallery time if desired.
-      votingBlock.classList.toggle('hidden', false);
-
-      // Persist preference
-      localStorage.setItem('g4c_mode', mode);
-    }
-
-    chipOpen.addEventListener('click', () => setMode('open'));
-    chipEvent.addEventListener('click', () => setMode('event'));
-
-    chipOpen.addEventListener('keydown', (e)=>{ if(e.key==='Enter') setMode('open'); });
-    chipEvent.addEventListener('keydown', (e)=>{ if(e.key==='Enter') setMode('event'); });
-
-    // restore mode
-    const saved = localStorage.getItem('g4c_mode');
-    if(saved === 'event') setMode('event');
-
+    // Mode toggle removed — event-day UI simplified.
     // TODO: Set your voting form link here
     // document.getElementById('voteLink').href = "PASTE_GOOGLE_FORM_LINK_HERE";
-  </script>
-  <script>
+
 const EVENT_DATE = "2026-02-26"; // YYYY-MM-DD
 
 function atTime(hhmm){
