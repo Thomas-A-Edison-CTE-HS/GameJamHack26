@@ -266,6 +266,88 @@
       background: rgba(255,59,212,.14);
       color:var(--ink);
     }
+    .agendaStatus{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.pill{
+  padding:10px 12px;
+  border-radius:999px;
+  font-weight:800;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);
+}
+
+.pillAlt{
+  background:rgba(255,255,255,.03);
+}
+
+.countdown{
+  font-weight:800;
+  opacity:.95;
+}
+
+.agendaList{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.agendaItem{
+  display:grid;
+  grid-template-columns: 140px 1fr;
+  gap:12px;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.03);
+}
+
+.agendaTime{
+  font-weight:900;
+  opacity:.9;
+}
+
+.agendaTitle{
+  font-weight:800;
+  margin-bottom:4px;
+}
+
+.agendaDesc{
+  opacity:.85;
+  font-size:.95rem;
+}
+
+.agendaItem.now{
+  border-color: rgba(255,255,255,.35);
+  background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+
+.agendaItem.next{
+  border-color: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.05);
+}
+
+.badge{
+  display:inline-block;
+  margin-left:8px;
+  font-size:.75rem;
+  font-weight:900;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.20);
+  background:rgba(255,255,255,.08);
+}
+
+@media (max-width: 520px){
+  .agendaItem{ grid-template-columns: 1fr; }
+}
     .hidden{display:none !important}
   </style>
 </head>
@@ -357,22 +439,26 @@
   </div>
 
   <div class="card">
-    <table>
-      <tr><th>Time</th><th>Activity</th></tr>
-      <tr><td>8:00 – 8:20</td><td>Check-in + Settle In</td></tr>
-      <tr><td>8:20 – 8:35</td><td>Welcome + What Makes a Great Prototype</td></tr>
-      <tr><td>8:35 – 8:55</td><td>Warm-Up Challenge</td></tr>
-      <tr><td>8:55 – 9:15</td><td>Team Formation</td></tr>
-      <tr><td>9:15 – 10:00</td><td>Speaker Panel + Mini Workshop</td></tr>
-      <tr><td>10:00 – 10:20</td><td>Theme Deep Dive: Outgrow Hunger</td></tr>
-      <tr><td>10:20 – 11:05</td><td>Story + World Building</td></tr>
-      <tr><td>11:15 – 11:45</td><td>Game Design Plan</td></tr>
-      <tr><td>11:45 – 12:25</td><td>Build Sprint #1</td></tr>
-      <tr><td>12:25 – 12:55</td><td>Lunch</td></tr>
-      <tr><td>12:55 – 1:30</td><td>Build Sprint #2 + Prepare to Showcase</td></tr>
-      <tr><td>1:30 – 2:10</td><td>Gallery Walk + Feedback</td></tr>
-      <tr><td>2:10 – 2:25</td><td>Awards + Wrap-Up</td></tr>
-    </table>
+ <section id="agenda" class="anchor">
+  <div class="sectionTitle">
+    <h2>Today’s Agenda (Live)</h2>
+    <div class="hint" id="agendaHint">Auto-updates during the event</div>
+  </div>
+
+  <div class="card">
+    <div class="agendaStatus">
+      <div class="pill" id="nowPill">NOW: —</div>
+      <div class="pill pillAlt" id="nextPill">NEXT: —</div>
+      <div class="countdown" id="countdown">Starts soon…</div>
+    </div>
+
+    <div class="agendaList" id="agendaList" aria-live="polite"></div>
+
+    <p class="mini">
+      Great games need all roles. Today is about testing ideas, not perfection.
+    </p>
+  </div>
+</section>
 
     <p class="mini">
       Remember: Playable > Perfect.
@@ -692,5 +778,195 @@
     // TODO: Set your voting form link here
     // document.getElementById('voteLink').href = "PASTE_GOOGLE_FORM_LINK_HERE";
   </script>
+  <script>
+/**
+ * Live Agenda (Event Day)
+ * - Highlights NOW + NEXT
+ * - Countdown to next transition
+ * - Updates every 15 seconds
+ * 
+ * Assumes local device time. If student devices are off-time,
+ * the highlight will be off for them. (Usually fine.)
+ */
+
+const EVENT_DATE = "2026-03-06"; // YYYY-MM-DD
+const TIMEZONE_NOTE = "Local time"; // purely display text
+
+// Helper: create a Date on EVENT_DATE at HH:MM (24h)
+function atTime(hhmm){
+  const [hh, mm] = hhmm.split(":").map(Number);
+  // Use local time on that date
+  return new Date(`${EVENT_DATE}T${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}:00`);
+}
+
+const agenda = [
+  { start:"08:00", end:"08:20", title:"Check-in + Settle In", desc:"Grab your seat, sign in, get ready." },
+  { start:"08:20", end:"08:35", title:"Welcome + What Makes a Great Prototype", desc:"What we’re building today + what success looks like." },
+  { start:"08:35", end:"08:55", title:"Warm-Up Challenge", desc:"Quick interactive activity (theme + game design thinking)." },
+  { start:"08:55", end:"09:15", title:"Team Time", desc:"Teams form, roles assigned, meet your teammates." },
+  { start:"09:15", end:"10:00", title:"Speaker Panel + Mini Workshop", desc:"Industry guests + short interactive activity." },
+  { start:"10:00", end:"10:20", title:"Theme Deep Dive: Outgrow Hunger", desc:"Guiding questions + inspiration to choose your focus." },
+  { start:"10:20", end:"11:05", title:"Story + World + Characters", desc:"Sketch + backstory. Make the world feel real." },
+  { start:"11:05", end:"11:15", title:"Brain Break", desc:"Reset and refocus." },
+  { start:"11:15", end:"11:45", title:"Game Design Plan", desc:"Goal, rules, core mechanic, components, win/lose." },
+  { start:"11:45", end:"12:25", title:"Build Sprint #1", desc:"Make it playable first." },
+  { start:"12:25", end:"12:55", title:"Lunch", desc:"Fuel up." },
+  { start:"12:55", end:"13:30", title:"Build Sprint #2 + Prep to Showcase", desc:"Iterate + polish your pitch." },
+  { start:"13:30", end:"14:10", title:"Gallery Walk: Playtest + Feedback", desc:"Present, play, give feedback, vote." },
+  { start:"14:10", end:"14:25", title:"Awards + Wrap-Up", desc:"Celebrate + next steps." }
+];
+
+const listEl = document.getElementById("agendaList");
+const nowPill = document.getElementById("nowPill");
+const nextPill = document.getElementById("nextPill");
+const countdownEl = document.getElementById("countdown");
+const hintEl = document.getElementById("agendaHint");
+
+function fmtTime(d){
+  const h = d.getHours();
+  const m = String(d.getMinutes()).padStart(2,"0");
+  const hr12 = ((h + 11) % 12) + 1;
+  const ampm = h >= 12 ? "PM" : "AM";
+  return `${hr12}:${m} ${ampm}`;
+}
+
+function msToCountdown(ms){
+  const totalSec = Math.max(0, Math.floor(ms/1000));
+  const min = Math.floor(totalSec/60);
+  const sec = totalSec % 60;
+  if (min >= 60){
+    const hr = Math.floor(min/60);
+    const remMin = min % 60;
+    return `${hr}h ${remMin}m`;
+  }
+  return `${min}m ${String(sec).padStart(2,"0")}s`;
+}
+
+function buildList(nowIdx, nextIdx){
+  listEl.innerHTML = "";
+  agenda.forEach((item, i) => {
+    const div = document.createElement("div");
+    div.className = "agendaItem" + (i === nowIdx ? " now" : "") + (i === nextIdx ? " next" : "");
+    div.dataset.index = i;
+
+    const time = document.createElement("div");
+    time.className = "agendaTime";
+    time.textContent = `${item.start}–${item.end}`;
+
+    const content = document.createElement("div");
+
+    const title = document.createElement("div");
+    title.className = "agendaTitle";
+    title.textContent = item.title;
+
+    if (i === nowIdx){
+      const b = document.createElement("span");
+      b.className = "badge";
+      b.textContent = "NOW";
+      title.appendChild(b);
+    } else if (i === nextIdx){
+      const b = document.createElement("span");
+      b.className = "badge";
+      b.textContent = "NEXT";
+      title.appendChild(b);
+    }
+
+    const desc = document.createElement("div");
+    desc.className = "agendaDesc";
+    desc.textContent = item.desc || "";
+
+    content.appendChild(title);
+    if (item.desc) content.appendChild(desc);
+
+    div.appendChild(time);
+    div.appendChild(content);
+    listEl.appendChild(div);
+  });
+
+  // Optional: keep "NOW" in view
+  if (nowIdx !== -1){
+    const nowEl = listEl.querySelector(`.agendaItem[data-index="${nowIdx}"]`);
+    if (nowEl) nowEl.scrollIntoView({ block:"nearest", behavior:"smooth" });
+  }
+}
+
+function updateAgenda(){
+  const now = new Date();
+  hintEl.textContent = `Auto-updates during the event • ${TIMEZONE_NOTE} • ${fmtTime(now)}`;
+
+  const startOfDay = atTime(agenda[0].start);
+  const endOfDay = atTime(agenda[agenda.length-1].end);
+
+  // Before event
+  if (now < startOfDay){
+    nowPill.textContent = "NOW: Not started yet";
+    nextPill.textContent = `NEXT: ${agenda[0].title} (${agenda[0].start})`;
+    countdownEl.textContent = `Starts in ${msToCountdown(startOfDay - now)}`;
+    buildList(-1, 0);
+    return;
+  }
+
+  // After event
+  if (now >= endOfDay){
+    nowPill.textContent = "NOW: Event finished";
+    nextPill.textContent = "NEXT: —";
+    countdownEl.textContent = "Thanks for an awesome Game Jam!";
+    buildList(-1, -1);
+    return;
+  }
+
+  // During event: find current block
+  let nowIdx = -1;
+  for (let i=0; i<agenda.length; i++){
+    const s = atTime(agenda[i].start);
+    const e = atTime(agenda[i].end);
+    if (now >= s && now < e){
+      nowIdx = i;
+      break;
+    }
+  }
+
+  // Find next block
+  let nextIdx = -1;
+  for (let i=0; i<agenda.length; i++){
+    const s = atTime(agenda[i].start);
+    if (now < s){
+      nextIdx = i;
+      break;
+    }
+  }
+
+  if (nowIdx === -1){
+    // We're between blocks (rare if times have gaps)
+    nowPill.textContent = "NOW: Transition time";
+  } else {
+    nowPill.textContent = `NOW: ${agenda[nowIdx].title}`;
+  }
+
+  if (nextIdx !== -1){
+    nextPill.textContent = `NEXT: ${agenda[nextIdx].title} (${agenda[nextIdx].start})`;
+    const nextStart = atTime(agenda[nextIdx].start);
+    countdownEl.textContent = `Next starts in ${msToCountdown(nextStart - now)}`;
+  } else {
+    nextPill.textContent = "NEXT: —";
+    // countdown to end of current block
+    if (nowIdx !== -1){
+      const end = atTime(agenda[nowIdx].end);
+      countdownEl.textContent = `Ends in ${msToCountdown(end - now)}`;
+    }
+  }
+
+  // If we’re inside a block, countdown to its end is often more useful than next start.
+  if (nowIdx !== -1){
+    const end = atTime(agenda[nowIdx].end);
+    countdownEl.textContent = `Time left: ${msToCountdown(end - now)}`;
+  }
+
+  buildList(nowIdx, nextIdx);
+}
+
+updateAgenda();
+setInterval(updateAgenda, 15000);
+</script>
 </body>
 </html>
