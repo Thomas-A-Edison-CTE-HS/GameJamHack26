@@ -62,6 +62,12 @@
       height:150px;
     }
 
+    /* shrink oversized logo on phones so it doesn’t collide with the sticky bar */
+    @media (max-width: 720px) {
+      .logo{height:40px;}
+      .brand{min-width:0;}
+    }
+
     /* sticky current agenda bar (inside the fixed topbar) */
     /* reduced bottom padding so the sticky bar doesn't overlap the nav */
     .topbar{padding-bottom:44px}
