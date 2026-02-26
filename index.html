@@ -38,11 +38,13 @@
     a{color:inherit}
     .wrap{max-width:1100px;margin:0 auto;padding:18px}
     .topbar{
-      position:sticky;top:0;z-index:20;
+      position:fixed;top:0;left:0;right:0;z-index:20;
       backdrop-filter: blur(10px);
       background: linear-gradient(180deg, rgba(18,0,34,.92), rgba(18,0,34,.72));
       border-bottom:1px solid var(--line);
     }
+    /* push main content down so it isn’t hidden under the fixed header */
+    body{padding-top:64px;}
     .topbar .wrap{display:flex;align-items:center;gap:12px}
     .brand{
       display:flex;align-items:center;gap:10px;min-width:220px;
@@ -274,7 +276,7 @@
     <div class="wrap">
       <div class="brand">
         <span class="badge">G4C</span>
-        <span>Student Game Jam Hub</span>
+        <span>2026 Game Jam Hack</span>
       </div>
       <nav aria-label="Event navigation">
         <a href="#home">Home</a>
@@ -293,9 +295,9 @@
     <section id="home" class="hero anchor">
       <div class="card">
         <p class="kicker">Thomas A. Edison CTE High School • Library • March 6, 2026 • 8:00 AM–2:30 PM</p>
-        <h1 class="title">2026 Game Jam Hack</h1>
+        <h1 class="title">Theme: <strong>Outgrow Hunger</strong></h1>
         <p class="sub">
-          Theme: <strong>Outgrow Hunger</strong> — food security, ecosystems, and community resilience.
+           — food security, ecosystems, and community resilience.
           Today you will design and prototype a <strong>playable</strong> tabletop or digital game.
         </p>
 
