@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2026 Games for Change Student Game Jam — Outgrow Hunger</title>
+  <meta name="description" content="Event-day hub for the 2026 Games for Change Student Game Jam at Thomas A. Edison CTE HS." />
+  <style>
+    :root{
+      --bg0:#0b0012;
+      --bg1:#120022;
+      --card:#1a0b2a;
+      --card2:#230c3a;
+      --ink:#f6f3ff;
+      --muted:#d7c7ff;
+      --muted2:#bfa8ff;
+      --accent:#ff3bd4;
+      --accent2:#a855f7;
+      --line:rgba(255,255,255,.12);
+
+      /* role tiles */
+      --role-blue:#4ea6ff;
+      --role-yellow:#ffd45a;
+      --role-green:#67d58a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(255,59,212,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(168,85,247,.35), transparent 55%),
+        radial-gradient(800px 500px at 60% 120%, rgba(78,166,255,.20), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(18,0,34,.92), rgba(18,0,34,.72));
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .wrap{display:flex;align-items:center;gap:12px}
+    .brand{
+      display:flex;align-items:center;gap:10px;min-width:220px;
+      font-weight:800;letter-spacing:.2px
+    }
+    .badge{
+      font-size:12px;
+      padding:6px 10px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+    }
+    nav{margin-left:auto;display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+    nav a{
+      text-decoration:none;
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid transparent;
+      color:var(--muted);
+    }
+    nav a:hover{
+      border-color:rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+      color:var(--ink);
+    }
+    .hero{
+      padding:24px 0 10px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr}
+      .brand{min-width:0}
+      nav{gap:6px}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .card h2,.card h3{margin:0 0 10px}
+    .kicker{color:var(--muted);font-size:13px;margin:0 0 10px}
+    .title{
+      font-size:34px;line-height:1.05;margin:0 0 10px;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      margin:0 0 14px;color:var(--muted);font-size:15px;line-height:1.35
+    }
+    .callouts{
+      display:flex;flex-wrap:wrap;gap:10px;margin-top:8px
+    }
+    .pill{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+    }
+    .bigquote{
+      margin:10px 0 0;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.22);
+      background: rgba(255,255,255,.05);
+      text-align:center;
+      font-weight:900;
+      font-size:18px;
+    }
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:700;
+      font-size:13px;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.07);
+    }
+    .btn.primary{
+      border-color:rgba(255,59,212,.40);
+      background: linear-gradient(180deg, rgba(255,59,212,.18), rgba(168,85,247,.12));
+    }
+    .btn:hover{filter:brightness(1.06)}
+    .poster{
+      position:relative;
+      overflow:hidden;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .poster .ph{
+      width:100%;
+      aspect-ratio: 16/10;
+      background:
+        radial-gradient(600px 300px at 20% 20%, rgba(255,59,212,.30), transparent 60%),
+        radial-gradient(600px 300px at 80% 40%, rgba(78,166,255,.22), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .poster .content{padding:14px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+      margin:14px 0 24px;
+    }
+    .span6{grid-column: span 6}
+    .span4{grid-column: span 4}
+    .span8{grid-column: span 8}
+    .span12{grid-column: span 12}
+    @media (max-width: 900px){
+      .span6,.span4,.span8{grid-column: span 12}
+    }
+
+    .sectionTitle{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+      margin:20px 0 10px
+    }
+    .sectionTitle h2{margin:0;font-size:22px}
+    .sectionTitle .hint{color:var(--muted);font-size:13px}
+
+    .mini{
+      font-size:12px;color:var(--muted);margin-top:6px
+    }
+    .list{
+      margin:10px 0 0;padding-left:18px;color:var(--muted)
+    }
+    .list li{margin:6px 0}
+    .divider{height:1px;background:var(--line);margin:10px 0}
+    .tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .tag{
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.16);
+      color:var(--muted);
+    }
+    .twoCol{
+      display:grid;grid-template-columns:1fr 1fr;gap:12px
+    }
+    @media (max-width: 700px){
+      .twoCol{grid-template-columns:1fr}
+    }
+
+    /* Roles */
+    .roleGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media (max-width: 900px){ .roleGrid{grid-template-columns:1fr} }
+    .role{
+      border-radius:16px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.05);
+    }
+    .role h3{margin:0 0 6px}
+    .role p{margin:0;color:var(--muted);font-size:14px;line-height:1.35}
+    .role.blue{border-color:rgba(78,166,255,.40); background: linear-gradient(180deg, rgba(78,166,255,.12), rgba(255,255,255,.03));}
+    .role.yellow{border-color:rgba(255,212,90,.45); background: linear-gradient(180deg, rgba(255,212,90,.12), rgba(255,255,255,.03));}
+    .role.green{border-color:rgba(103,213,138,.45); background: linear-gradient(180deg, rgba(103,213,138,.12), rgba(255,255,255,.03));}
+
+    /* Tables */
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:8px;overflow:hidden;border-radius:14px;border:1px solid var(--line)}
+    th,td{padding:10px 10px;font-size:13px}
+    th{background:rgba(255,255,255,.07);text-align:left}
+    td{background:rgba(0,0,0,.16);color:var(--muted)}
+    tr+tr td{border-top:1px solid var(--line)}
+    .notice{
+      border-radius:16px;
+      border:1px solid rgba(255,59,212,.35);
+      background: linear-gradient(180deg, rgba(255,59,212,.12), rgba(168,85,247,.08));
+      padding:12px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.35;
+    }
+    .footer{
+      padding:22px 0 28px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      opacity:.95
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
+    .small{font-size:12px;color:var(--muted)}
+    .anchor{scroll-margin-top:84px}
+    .toggleRow{
+      display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between
+    }
+    .mode{
+      display:flex;gap:8px;flex-wrap:wrap;align-items:center
+    }
+    .chip{
+      cursor:pointer;
+      user-select:none;
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.16);
+      color:var(--muted);
+    }
+    .chip.active{
+      border-color:rgba(255,59,212,.45);
+      background: rgba(255,59,212,.14);
+      color:var(--ink);
+    }
+    .hidden{display:none !important}
+  </style>
+</head>
+
+<body>
+  <!-- Top Nav -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <span class="badge">G4C</span>
+        <span>Student Game Jam Hub</span>
+      </div>
+      <nav aria-label="Event navigation">
+        <a href="#home">Home</a>
+        <a href="#theme">Theme</a>
+        <a href="#roles">Roles</a>
+        <a href="#toolkit">Toolkit</a>
+        <a href="#build">Build Flow</a>
+        <a href="#gallery">Gallery Walk</a>
+        <a href="#resources">Resources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section id="home" class="hero anchor">
+      <div class="card">
+        <p class="kicker">Thomas A. Edison CTE High School • Library • March 6, 2026 • 8:00 AM–2:30 PM</p>
+        <h1 class="title">2026 Games for Change Student Game Jam</h1>
+        <p class="sub">
+          Theme: <strong>Outgrow Hunger</strong> — food security, ecosystems, and community resilience.
+          Today you will design and prototype a <strong>playable</strong> tabletop or digital game.
+        </p>
+
+        <div class="bigquote">Great games need all three roles. Today is about testing ideas, not perfection.</div>
+
+        <div class="callouts" aria-label="Event highlights">
+          <span class="pill">Teams of 3</span>
+          <span class="pill">Playtest + Iterate</span>
+          <span class="pill">Gallery Walk @ ~1:20 PM</span>
+          <span class="pill">Mentors + Judges in the room</span>
+        </div>
+
+        <div class="actions">
+          <!-- Replace these links with your actual files/pages -->
+          <a class="btn primary" href="#toolkit">Start the Toolkit</a>
+          <a class="btn" href="#build">Go to Build Flow</a>
+          <a class="btn" href="#resources">Open Resources</a>
+        </div>
+
+        <p class="mini">
+          Tip: Keep it simple. A prototype that teaches one idea well beats a “big game” nobody can finish.
+        </p>
+      </div>
+
+      <!-- Poster / Quick Links -->
+      <aside class="card poster">
+        <div class="ph">
+          Poster Placeholder<br/>
+          <span class="small">Replace this block with your poster image</span>
+        </div>
+        <div class="content">
+          <div class="toggleRow">
+            <strong>Quick Links</strong>
+            <div class="mode" aria-label="Page mode toggle">
+              <span id="chipOpen" class="chip active" role="button" tabindex="0">Open Mode</span>
+              <span id="chipEvent" class="chip" role="button" tabindex="0">Event-Day Mode</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="tagrow">
+            <!-- Update these URLs -->
+            <a class="tag" href="https://learn.gamesforchange.org/themes/outgrow-hunger" target="_blank" rel="noreferrer">Outgrow Hunger Theme</a>
+            <a class="tag" href="https://learn.gamesforchange.org/student-challenge/competition" target="_blank" rel="noreferrer">Competition Info</a>
+            <a class="tag" href="https://playtesting.gamesforchange.org/" target="_blank" rel="noreferrer">G4C Playtesting</a>
+            <a class="tag" href="https://mrsramirez.github.io/Hackathon2024/" target="_blank" rel="noreferrer">Last Year Site</a>
+          </div>
+          <p class="mini">
+            <span class="mono">Event-Day Mode</span> hides “extra” info and keeps students focused on what to do next.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <!-- THEME -->
+    <section id="theme" class="anchor">
+      <div class="sectionTitle">
+        <h2>Theme: Outgrow Hunger</h2>
+        <div class="hint">Connect local ecosystems to global food systems.</div>
+      </div>
+
+      <div class="grid">
+        <div class="card span8">
+          <h3>Design Prompt</h3>
+          <p class="sub">
+            Design a game where players care for a natural space that feeds and supports a community.
+            Players take actions that show how ecosystems help fight hunger and build resilience.
+          </p>
+          <div class="twoCol">
+            <div>
+              <strong>Impact Lens</strong>
+              <ul class="list">
+                <li>Show cause-and-effect (systems thinking).</li>
+                <li>Make scarcity real (trade-offs).</li>
+                <li>Teach through gameplay, not lectures.</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Starter Questions</strong>
+              <ul class="list">
+                <li>What resource is scarce?</li>
+                <li>Who benefits and who gets left out?</li>
+                <li>How does the ecosystem support food access?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span4">
+          <h3>Success Today</h3>
+          <div class="notice">
+            <strong>Finish a playable prototype.</strong><br/>
+            It can be small. It must be testable in 3–5 minutes.
+          </div>
+          <ul class="list">
+            <li>Clear goal</li>
+            <li>Core mechanic</li>
+            <li>Rules + win/lose</li>
+            <li>One meaningful trade-off</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROLES -->
+    <section id="roles" class="anchor">
+      <div class="sectionTitle">
+        <h2>Roles</h2>
+        <div class="hint">Everyone is essential. Roles are about balance, not ranking.</div>
+      </div>
+
+      <div class="grid">
+        <div class="card span12">
+          <div class="roleGrid">
+            <div class="role blue">
+              <h3>Team Captain</h3>
+              <p>
+                Keeps the team on track. Makes sure everyone is heard, decisions get made, and the prototype is playable.
+              </p>
+              <div class="mini"><strong>Focus:</strong> planning, time, teamwork</div>
+            </div>
+            <div class="role yellow">
+              <h3>Gameplay Architect</h3>
+              <p>
+                Defines rules, goals, and core mechanics. Makes sure the game is understandable and fun to playtest.
+              </p>
+              <div class="mini"><strong>Focus:</strong> mechanics, rules, balance</div>
+            </div>
+            <div class="role green">
+              <h3>Experience Builder</h3>
+              <p>
+                Builds the prototype: board layout, cards, UI, interactions. Turns ideas into something playable fast.
+              </p>
+              <div class="mini"><strong>Focus:</strong> building, iteration, clarity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section id="toolkit" class="anchor">
+      <div class="sectionTitle">
+        <h2>Toolkit</h2>
+        <div class="hint">Use this to plan fast and build smart.</div>
+      </div>
+
+      <div class="grid">
+        <div class="card span6">
+          <h3>The 6 Parts of a Game</h3>
+          <ul class="list">
+            <li><strong>Space:</strong> Where does the game take place?</li>
+            <li><strong>Goal:</strong> How do you win?</li>
+            <li><strong>Components:</strong> What pieces do you need?</li>
+            <li><strong>Core Mechanics:</strong> What action repeats?</li>
+            <li><strong>Rules:</strong> What can/can’t you do?</li>
+            <li><strong>Challenge:</strong> What makes it hard?</li>
+          </ul>
+          <div class="tagrow">
+            <span class="tag">Keep it simple</span>
+            <span class="tag">Make trade-offs</span>
+            <span class="tag">Show consequences</span>
+          </div>
+        </div>
+
+        <div class="card span6">
+          <h3>Fast Planning Template</h3>
+          <table aria-label="Fast planning template">
+            <tr><th>Prompt</th><th>Your answer</th></tr>
+            <tr><td>Game Title</td><td>_____________________</td></tr>
+            <tr><td>Player Role</td><td>_____________________</td></tr>
+            <tr><td>Goal</td><td>_____________________</td></tr>
+            <tr><td>Core Mechanic (verb)</td><td>_____________________</td></tr>
+            <tr><td>Scarce Resource</td><td>_____________________</td></tr>
+            <tr><td>Trade-off</td><td>_____________________</td></tr>
+          </table>
+          <p class="mini">If your mechanic doesn’t show “Outgrow Hunger,” redesign the mechanic.</p>
+        </div>
+
+        <div class="card span12">
+          <h3>Playtest Questions (Use these during Gallery Walk)</h3>
+          <div class="twoCol">
+            <ul class="list">
+              <li>What is the goal of the game?</li>
+              <li>What action do you repeat the most?</li>
+              <li>What is the scarce resource?</li>
+            </ul>
+            <ul class="list">
+              <li>What trade-off did you have to make?</li>
+              <li>Where does Outgrow Hunger show up in gameplay?</li>
+              <li>One suggestion to improve clarity or fun?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILD FLOW -->
+    <section id="build" class="anchor">
+      <div class="sectionTitle">
+        <h2>Build Flow</h2>
+        <div class="hint">Follow these steps. Don’t skip playtesting.</div>
+      </div>
+
+      <div class="grid">
+        <div class="card span4">
+          <h3>1) Brainstorm</h3>
+          <ul class="list">
+            <li>Pick a player role</li>
+            <li>Pick a scarce resource</li>
+            <li>Define one trade-off</li>
+          </ul>
+        </div>
+        <div class="card span4">
+          <h3>2) Prototype</h3>
+          <ul class="list">
+            <li>Build the smallest playable version</li>
+            <li>Write simple rules</li>
+            <li>Add a win/lose condition</li>
+          </ul>
+        </div>
+        <div class="card span4">
+          <h3>3) Playtest</h3>
+          <ul class="list">
+            <li>Watch players</li>
+            <li>Note confusion</li>
+            <li>Ask: “What did you learn?”</li>
+          </ul>
+        </div>
+
+        <div class="card span12">
+          <h3>Iteration Checklist</h3>
+          <div class="twoCol">
+            <ul class="list">
+              <li>Remove one confusing rule</li>
+              <li>Make the goal clearer</li>
+              <li>Increase the trade-off</li>
+            </ul>
+            <ul class="list">
+              <li>Shorten setup time</li>
+              <li>Make feedback visible (scores/resources)</li>
+              <li>Improve theme connection through mechanics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY WALK -->
+    <section id="gallery" class="anchor">
+      <div class="sectionTitle">
+        <h2>Gallery Walk</h2>
+        <div class="hint">Pitch + Play + Feedback + Voting.</div>
+      </div>
+
+      <div class="grid">
+        <div class="card span6">
+          <h3>Station Roles</h3>
+          <ul class="list">
+            <li><strong>1 teammate stays</strong> to present + teach the game.</li>
+            <li><strong>2 teammates rotate</strong> to playtest other teams and vote.</li>
+            <li>Rotate every 6–8 minutes.</li>
+          </ul>
+          <p class="mini">Be kind. Be specific. Help each other improve.</p>
+        </div>
+
+        <div class="card span6">
+          <h3>60-Second Pitch Template</h3>
+          <ul class="list">
+            <li>Our game is called <span class="mono">_____</span></li>
+            <li>Players are <span class="mono">_____</span></li>
+            <li>The goal is <span class="mono">_____</span></li>
+            <li>The core mechanic is <span class="mono">_____</span></li>
+            <li>The trade-off is <span class="mono">_____</span></li>
+            <li>This connects to Outgrow Hunger because <span class="mono">_____</span></li>
+          </ul>
+        </div>
+
+        <div class="card span12" id="votingBlock">
+          <h3>Peer Voting (Link / QR)</h3>
+          <p class="sub">Replace this with your Google Form link for voting and/or feedback.</p>
+          <a class="btn primary" href="#" id="voteLink">Open Voting Form</a>
+          <p class="mini">Teachers: in Event-Day Mode, students will only see essentials.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section id="resources" class="anchor">
+      <div class="sectionTitle">
+        <h2>Resources</h2>
+        <div class="hint">Use official resources + quick references.</div>
+      </div>
+
+      <div class="grid">
+        <div class="card span6">
+          <h3>Games for Change Links</h3>
+          <ul class="list">
+            <li><a href="https://learn.gamesforchange.org/themes/outgrow-hunger" target="_blank" rel="noreferrer">Outgrow Hunger Theme Page</a></li>
+            <li><a href="https://learn.gamesforchange.org/student-challenge/competition" target="_blank" rel="noreferrer">Student Challenge: Competition Info</a></li>
+            <li><a href="https://playtesting.gamesforchange.org/" target="_blank" rel="noreferrer">G4C Playtesting Platform</a></li>
+          </ul>
+          <p class="mini">Focus on: theme → systems → mechanic → playtest.</p>
+        </div>
+
+        <div class="card span6" id="extraBlock">
+          <h3>Extra (Teacher / Mentor)</h3>
+          <ul class="list">
+            <li><a href="https://mrsramirez.github.io/Hackathon2024/" target="_blank" rel="noreferrer">Last Year Event Website</a></li>
+            <li><span class="mono">Add:</span> Agenda PDF link, rubric link, student packet link</li>
+          </ul>
+          <p class="mini">This block hides in Event-Day Mode.</p>
+        </div>
+
+        <div class="card span12">
+          <h3>Need help?</h3>
+          <div class="notice">
+            If you’re stuck: simplify your game. Pick <strong>one</strong> trade-off and make it the center of gameplay.
+            Ask a mentor to playtest your rules in 2 minutes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      © 2026 • Thomas A. Edison CTE High School • Games for Change Student Game Jam Hub
+    </div>
+  </main>
+
+  <script>
+    // Simple "Event-Day Mode" toggle:
+    // - hides extra blocks
+    // - keeps essentials visible
+    const chipOpen = document.getElementById('chipOpen');
+    const chipEvent = document.getElementById('chipEvent');
+
+    const extraBlock = document.getElementById('extraBlock');
+    const votingBlock = document.getElementById('votingBlock');
+
+    function setMode(mode){
+      const isEvent = mode === 'event';
+      chipOpen.classList.toggle('active', !isEvent);
+      chipEvent.classList.toggle('active', isEvent);
+
+      // hide teacher extras in event mode
+      extraBlock.classList.toggle('hidden', isEvent);
+
+      // In event mode, voting stays visible; you could also hide it until gallery time if desired.
+      votingBlock.classList.toggle('hidden', false);
+
+      // Persist preference
+      localStorage.setItem('g4c_mode', mode);
+    }
+
+    chipOpen.addEventListener('click', () => setMode('open'));
+    chipEvent.addEventListener('click', () => setMode('event'));
+
+    chipOpen.addEventListener('keydown', (e)=>{ if(e.key==='Enter') setMode('open'); });
+    chipEvent.addEventListener('keydown', (e)=>{ if(e.key==='Enter') setMode('event'); });
+
+    // restore mode
+    const saved = localStorage.getItem('g4c_mode');
+    if(saved === 'event') setMode('event');
+
+    // TODO: Set your voting form link here
+    // document.getElementById('voteLink').href = "PASTE_GOOGLE_FORM_LINK_HERE";
+  </script>
+</body>
+</html>
