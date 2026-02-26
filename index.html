@@ -91,8 +91,8 @@
     nav a{
       text-decoration:none;
       /* slightly larger nav text for readability */
-      font-size:30px;
-      padding:9px 12px;
+      font-size:20px;
+      padding:9px 5px 12px;
       border-radius:10px;
       border:1px solid transparent;
       color:var(--muted);
@@ -379,6 +379,40 @@
 @media (max-width: 520px){
   .agendaItem{ grid-template-columns: 1fr; }
 }
+
+/* responsive hamburger menu styles */
+.menuButton{
+  display:none;
+  background:none;
+  border:none;
+  color:inherit;
+  font-size:24px;
+  cursor:pointer;
+}
+nav{
+  margin-left:10px;display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end
+}
+/* mobile adjustments for navigation */
+@media (max-width: 720px) {
+  .menuButton{display:block;}
+  nav{
+    display:none;
+    flex-direction:column;
+    gap:0;
+    background: linear-gradient(180deg, rgba(18,0,34,.92), rgba(18,0,34,.92));
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    padding:10px 0;
+  }
+  nav.open{display:flex;}
+  nav a{
+    padding:12px 18px;
+    border-radius:0;
+    justify-content:flex-start;
+  }
+}
     .hidden{display:none !important}
   </style>
 </head>
@@ -389,9 +423,12 @@
     <div class="wrap">
       <div class="brand" heiht="50%">
         <span class="badge"><img src="4.gif" alt="G4C logo" class="logo" /></span>
-
       </div>
-      <nav aria-label="Event navigation">
+      <!-- hamburger button shown only on narrow screens -->
+      <button id="menuButton" class="menuButton" aria-label="Toggle navigation">
+        &#9776;
+      </button>
+      <nav id="mainNav" aria-label="Event navigation">
         <a href="#home">Home</a>
         <a href="#theme">Theme</a>
         <a href="#roles">Roles</a>
@@ -399,7 +436,8 @@
         <a href="#build">Build Flow</a>
         <a href="#gallery">Gallery Walk</a>
         <a href="#resources">Resources</a>
-      </nav><hr>
+      </nav>
+      <hr>
     </div>
       <!-- Sticky current agenda (appears under the navbar) -->
   <div id="currentNow" class="currentNow hidden" aria-live="polite">
@@ -863,6 +901,8 @@ const currentNowTime = document.getElementById('currentNowTime');
 const currentNowTitle = document.getElementById('currentNowTitle');
 const currentNowDesc = document.getElementById('currentNowDesc');
 const currentNowPill = document.getElementById('currentNowPill');
+const menuButton = document.getElementById('menuButton');
+const mainNav = document.getElementById('mainNav');
 
 // Provide a timezone note for the UI. Fallback to a simple label if unavailable.
 const TIMEZONE_NOTE = (typeof Intl !== 'undefined' && Intl.DateTimeFormat)
@@ -1025,7 +1065,18 @@ if (nextIdx !== -1) {
 
 updateAgenda();
 setInterval(updateAgenda, 15000);
-</script>.  
-</body>
-</html>
+
+// make the nav button work on small screens
+if (menuButton && mainNav) {
+  menuButton.addEventListener('click', () => {
+    mainNav.classList.toggle('open');
+  });
+  // close menu when a navigation link is tapped
+  mainNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mainNav.classList.remove('open');
+    });
+  });
+}
+</script>
      
