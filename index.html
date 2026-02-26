@@ -462,6 +462,8 @@
 
     <div class="agendaList" id="agendaList" aria-live="polite"></div>
 
+    <div id="agendaDebug" class="small mono" style="margin-top:8px;color:var(--muted)"></div>
+
     <p class="mini">
       Great games need all roles. Today is about testing ideas, not perfection.
     </p>
@@ -818,6 +820,7 @@ const nowPill = document.getElementById("nowPill");
 const nextPill = document.getElementById("nextPill");
 const countdownEl = document.getElementById("countdown");
 const hintEl = document.getElementById("agendaHint");
+const debugEl = document.getElementById("agendaDebug");
 
 // Provide a timezone note for the UI. Fallback to a simple label if unavailable.
 const TIMEZONE_NOTE = (typeof Intl !== 'undefined' && Intl.DateTimeFormat)
@@ -955,6 +958,10 @@ if (nextIdx !== -1) {
   nextPill.textContent = "NEXT: —";
 }
 
+  // show debug info to help troubleshoot date/time comparisons
+  if (debugEl) {
+    debugEl.textContent = `now=${now.toISOString()} | startOfDay=${startOfDay.toISOString()} | endOfDay=${endOfDay.toISOString()} | nowIdx=${nowIdx} | nextIdx=${nextIdx}`;
+  }
 
   buildList(nowIdx, nextIdx);
 }
