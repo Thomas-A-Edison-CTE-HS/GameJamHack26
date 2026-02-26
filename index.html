@@ -53,10 +53,13 @@
       font-weight:800;letter-spacing:.2px
     }
     /* logo next to badge */
-    .brand .logo{
-      height:32px;
+    .brand {
+      height:auto;
       width:auto;
       display:block;
+    }
+    .logo{
+      height:150px;
     }
 
     /* sticky current agenda bar (inside the fixed topbar) */
@@ -88,7 +91,7 @@
     nav a{
       text-decoration:none;
       /* slightly larger nav text for readability */
-      font-size:15px;
+      font-size:30px;
       padding:9px 12px;
       border-radius:10px;
       border:1px solid transparent;
@@ -384,9 +387,9 @@
   <!-- Top Nav -->
   <header class="topbar">
     <div class="wrap">
-      <div class="brand">
+      <div class="brand" heiht="50%">
         <span class="badge"><img src="4.gif" alt="G4C logo" class="logo" /></span>
-        <span>2026 Game Jam Hack</span>
+
       </div>
       <nav aria-label="Event navigation">
         <a href="#home">Home</a>
@@ -409,7 +412,9 @@
       <div class="pill" id="currentNowPill">NOW</div>
     </div>
   </header>
-  </header>
+  <br>
+  <hr> <br>
+  <hr>
 
   <main class="wrap">
     <!-- HERO -->
@@ -893,7 +898,10 @@ function buildList(nowIdx, nextIdx){
 
     const time = document.createElement("div");
     time.className = "agendaTime";
-    time.textContent = `${item.start}–${item.end}`;
+    // convert stored 24‑hour strings to human friendly 12‑hour format
+    const startFmt = fmtTime(atTime(item.start));
+    const endFmt = fmtTime(atTime(item.end));
+    time.textContent = `${startFmt}–${endFmt}`;
 
     const content = document.createElement("div");
 
@@ -938,7 +946,7 @@ function updateAgenda(){
   // Before event
   if (now < startOfDay){
     nowPill.textContent = "NOW: Not started yet";
-    nextPill.textContent = `NEXT: ${agenda[0].title} (${agenda[0].start})`;
+    nextPill.textContent = `NEXT: ${agenda[0].title} (${fmtTime(atTime(agenda[0].start))})`;
     countdownEl.textContent = `Starts in ${msToCountdown(startOfDay - now)}`;
     buildList(-1, 0);
     return;
@@ -986,7 +994,7 @@ if (nowIdx !== -1) {
 }
 
 if (nextIdx !== -1) {
-  nextPill.textContent = `NEXT: ${agenda[nextIdx].title} (${agenda[nextIdx].start})`;
+  nextPill.textContent = `NEXT: ${agenda[nextIdx].title} (${fmtTime(atTime(agenda[nextIdx].start))})`;
 } else {
   nextPill.textContent = "NEXT: —";
 }
@@ -1000,7 +1008,9 @@ if (nextIdx !== -1) {
   if (currentNowContainer) {
     if (nowIdx !== -1) {
       const item = agenda[nowIdx];
-      currentNowTime.textContent = `${item.start}–${item.end}`;
+      const startFmt = fmtTime(atTime(item.start));
+      const endFmt = fmtTime(atTime(item.end));
+      currentNowTime.textContent = `${startFmt}–${endFmt}`;
       currentNowTitle.textContent = item.title;
       currentNowDesc.textContent = item.desc || "";
       currentNowPill.textContent = "NOW";
