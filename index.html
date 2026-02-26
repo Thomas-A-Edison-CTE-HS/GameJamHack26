@@ -60,12 +60,18 @@
     }
     .logo{
       height:150px;
+      transition: height 0.3s ease;
     }
 
     /* shrink oversized logo on phones so it doesn’t collide with the sticky bar */
     @media (max-width: 720px) {
       .logo{height:40px;}
       .brand{min-width:0;}
+    }
+
+    /* when the topbar is scrolled, make the logo smaller */
+    .topbar.shrunk .logo {
+      height:75px;
     }
 
     /* sticky current agenda bar (inside the fixed topbar) */
@@ -909,6 +915,7 @@ const currentNowDesc = document.getElementById('currentNowDesc');
 const currentNowPill = document.getElementById('currentNowPill');
 const menuButton = document.getElementById('menuButton');
 const mainNav = document.getElementById('mainNav');
+const topbar = document.querySelector('.topbar');
 
 // Provide a timezone note for the UI. Fallback to a simple label if unavailable.
 const TIMEZONE_NOTE = (typeof Intl !== 'undefined' && Intl.DateTimeFormat)
@@ -1082,6 +1089,17 @@ if (menuButton && mainNav) {
     a.addEventListener('click', () => {
       mainNav.classList.remove('open');
     });
+  });
+}
+
+// shrink the logo when the user scrolls down
+if (topbar) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      topbar.classList.add('shrunk');
+    } else {
+      topbar.classList.remove('shrunk');
+    }
   });
 }
 </script>
