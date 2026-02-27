@@ -552,12 +552,12 @@ nav{
   <div class="card">
  <section id="agenda" class="anchor">
   <div class="sectionTitle">
-    <div style="display:flex;align-items:center;gap:10px"><button class="agendaToggleBtn" id="agendaToggleBtn" aria-label="Toggle agenda">▼</button><h2>Today's Agenda</h2></div>
+  <div style="display:flex;align-items:center;gap:10px"><button class="agendaToggleBtn collapsed" id="agendaToggleBtn" aria-label="Toggle agenda" aria-expanded="false">▼</button><h2>Today's Agenda</h2></div>
     <div class="hint" id="agendaHint">We are @</div>
      <div class="hint">Stay focused. Build. Playtest. Iterate.</div>
   </div>
 
-  <div class="card agendaContent" id="agendaContent">
+  <div class="card agendaContent collapsed" id="agendaContent">
     <div class="agendaStatus">
       <div class="pill" id="nowPill">NOW: —</div>
       <div class="pill pillAlt" id="nextPill">NEXT: —</div>
@@ -1080,9 +1080,15 @@ setInterval(updateAgenda, 15000);
 const agendaToggleBtn = document.getElementById('agendaToggleBtn');
 const agendaContent = document.getElementById('agendaContent');
 if (agendaToggleBtn && agendaContent) {
+  // ensure ARIA matches initial state
+  const expandedInit = !agendaContent.classList.contains('collapsed');
+  agendaToggleBtn.setAttribute('aria-expanded', String(expandedInit));
+
   agendaToggleBtn.addEventListener('click', () => {
     agendaContent.classList.toggle('collapsed');
     agendaToggleBtn.classList.toggle('collapsed');
+    const expanded = !agendaContent.classList.contains('collapsed');
+    agendaToggleBtn.setAttribute('aria-expanded', String(expanded));
   });
 }
 
