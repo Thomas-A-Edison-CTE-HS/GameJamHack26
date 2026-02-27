@@ -465,7 +465,8 @@ nav{
   <br>
   <hr> <br>
   <hr>
-
+<br>
+  <hr>
   <main class="wrap">
     <!-- HERO -->
     <section id="home" class="hero anchor">
@@ -506,17 +507,14 @@ nav{
         <div class="bigquote">Great games need all three roles. Today is about testing ideas, not perfection.</div>
 
         <div class="callouts" aria-label="Event highlights">
-          <span class="pill">Teams of 3</span>
-          <span class="pill">Playtest + Iterate</span>
-          <span class="pill">Gallery Walk @ ~1:20 PM</span>
-          <span class="pill">Mentors + Judges in the room</span>
+          <span class="pill">Teams of 3 + Playtest + Iterate / Gallery Walk @ ~1:20 PM / Mentors + Judges in the room</span>
         </div>
 
         <div class="actions">
           <!-- Replace these links with your actual files/pages -->
           <a class="btn primary" href="#toolkit">Start the Toolkit</a>
-          <a class="btn" href="#build">Go to Build Flow</a>
-          <a class="btn" href="#resources">Open Resources</a>
+          <a class="btn primary" href="#build">Go to Build Flow</a>
+          <a class="btn primary" href="#resources">Open Resources</a>
         </div>
 
         <p class="mini">
@@ -524,19 +522,19 @@ nav{
         </p>
       </div>
 
-     
     </section>
 <section id="agenda" class="anchor">
   <div class="sectionTitle">
-    <h2>Today’s Agenda</h2>
-    <div class="hint">Stay focused. Build. Playtest. Iterate.</div>
+  
+   
   </div>
 
   <div class="card">
  <section id="agenda" class="anchor">
   <div class="sectionTitle">
-    <h2>Today’s Agenda (Live)</h2>
-    <div class="hint" id="agendaHint">Auto-updates during the event</div>
+    <h2>Today’s Agenda</h2>
+    <div class="hint" id="agendaHint">We are @</div>
+     <div class="hint">Stay focused. Build. Playtest. Iterate.</div>
   </div>
 
   <div class="card">
@@ -845,7 +843,7 @@ nav{
     // TODO: Set your voting form link here
     // document.getElementById('voteLink').href = "PASTE_GOOGLE_FORM_LINK_HERE";
 
-const EVENT_DATE = "2026-02-27"; // YYYY-MM-DD
+const EVENT_DATE = "2026-03-06"; // YYYY-MM-DD
 
 function atTime(hhmm){
   const [hh, mm] = hhmm.split(":").map(Number);
@@ -868,7 +866,8 @@ const agenda = [
   { start:"12:40", end:"13:20", title:"Game Build + Iteration", desc:"Expand prototype + prepare for Gallery Walk. AI allowed with disclosure." },
   { start:"13:20", end:"14:00", title:"Gallery Walk: Peer Voting + Judge Evaluation", desc:"Carousel format. Rotate host/player roles. 45-sec pitches." },
   { start:"14:00", end:"14:15", title:"Judges Deliberate + Student Submissions", desc:"Finalize submissions, reflection/exit survey, group photos." },
-  { start:"14:15", end:"14:30", title:"Awards + Wrap-Up + Next Steps", desc:"Winners + deadline reminder + thank-yous." }
+  { start:"14:15", end:"14:30", title:"Awards + Wrap-Up + Next Steps", desc:"Winners + deadline reminder + thank-yous." },
+  { start:"14:31", end:"23:30", title:"That’s all the fun for today ! ", desc:"Congratulations on a great day of creativity and learning!" }
 ];
 
 const listEl = document.getElementById("agendaList");
@@ -960,7 +959,7 @@ function buildList(nowIdx, nextIdx){
 
 function updateAgenda(){
   const now = new Date();
-  hintEl.textContent = `Auto-updates during the event • ${TIMEZONE_NOTE} • ${fmtTime(now)}`;
+  hintEl.textContent = `• ${TIMEZONE_NOTE}• ${fmtTime(now)}`;
 
   const startOfDay = atTime(agenda[0].start);
   const endOfDay = atTime(agenda[agenda.length-1].end);
