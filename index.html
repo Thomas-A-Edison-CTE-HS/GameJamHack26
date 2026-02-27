@@ -845,13 +845,15 @@ nav{
 
 //const EVENT_DATE = "2026-03-06"; // YYYY-MM-DD
 const EVENT_DATE = "2026-02-27"; // YYYY-MM-DD
+// For testing: set these to a WIDE time window to ensure sticky bar shows
+// Change start to "00:00" and end to "23:59" in the first/last agenda items
 function atTime(hhmm){
   const [hh, mm] = hhmm.split(":").map(Number);
   return new Date(`${EVENT_DATE}T${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}:00`);
 }
 
 const agenda = [
-  { start:"08:00", end:"08:15", title:"Arrival, Check-In & Setup", desc:"Check-in, name tags, devices out, Wi-Fi check, seating." },
+  { start:"00:00", end:"08:15", title:"Arrival, Check-In & Setup", desc:"Check-in, name tags, devices out, Wi-Fi check, seating." },
   { start:"08:15", end:"08:25", title:"Welcome & Framing the Day", desc:"What G4C is, what you’ll create today, AI expectations." },
   { start:"08:25", end:"08:55", title:"Kahoot: Theme + Game Design (Teams)", desc:"Theme + systems thinking warm-up. Results form teams + roles." },
   { start:"08:55", end:"09:25", title:"🎤 Guest Speaker Panel: Games, CS & Your Future", desc:"Short panel + Q&A (students submit questions in advance)." },
@@ -867,7 +869,7 @@ const agenda = [
   { start:"13:20", end:"14:00", title:"Gallery Walk: Peer Voting + Judge Evaluation", desc:"Carousel format. Rotate host/player roles. 45-sec pitches." },
   { start:"14:00", end:"14:15", title:"Judges Deliberate + Student Submissions", desc:"Finalize submissions, reflection/exit survey, group photos." },
   { start:"14:15", end:"14:30", title:"Awards + Wrap-Up + Next Steps", desc:"Winners + deadline reminder + thank-yous." },
-  { start:"14:31", end:"23:30", title:"That’s all the fun for today ! ", desc:"Congratulations on a great day of creativity and learning!" }
+  { start:"14:31", end:"23:59", title:"That’s all the fun for today ! ", desc:"Congratulations on a great day of creativity and learning!" }
 ];
 
 const listEl = document.getElementById("agendaList");
