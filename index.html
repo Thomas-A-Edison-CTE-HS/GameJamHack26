@@ -426,6 +426,29 @@ nav{
   }
 }
     .hidden{display:none !important}
+    .agendaToggleBtn{
+      background:none;
+      border:none;
+      color:inherit;
+      cursor:pointer;
+      font-size:20px;
+      padding:0;
+      display:flex;align-items:center;justify-content:center;width:24px;height:24px;
+      transition:transform 0.2s ease;
+    }
+    .agendaToggleBtn.collapsed{
+      transform:rotate(-90deg);
+    }
+    .agendaContent{
+      transition:max-height 0.3s ease, opacity 0.3s ease;
+      max-height:1000px;
+      opacity:1;
+      overflow:hidden;
+    }
+    .agendaContent.collapsed{
+      max-height:0;
+      opacity:0;
+    }
   </style>
 </head>
 
@@ -524,20 +547,17 @@ nav{
 
     </section>
 <section id="agenda" class="anchor">
-  <div class="sectionTitle">
-    <h2>Today’s Agenda</h2>
-   
-  </div>
+  
 
   <div class="card">
  <section id="agenda" class="anchor">
   <div class="sectionTitle">
-    <h2>Today’s Agenda</h2>
+    <div style="display:flex;align-items:center;gap:10px"><button class="agendaToggleBtn" id="agendaToggleBtn" aria-label="Toggle agenda">▼</button><h2>Today's Agenda</h2></div>
     <div class="hint" id="agendaHint">We are @</div>
      <div class="hint">Stay focused. Build. Playtest. Iterate.</div>
   </div>
 
-  <div class="card">
+  <div class="card agendaContent" id="agendaContent">
     <div class="agendaStatus">
       <div class="pill" id="nowPill">NOW: —</div>
       <div class="pill pillAlt" id="nextPill">NEXT: —</div>
@@ -1048,6 +1068,16 @@ if (nextIdx !== -1) {
 
 updateAgenda();
 setInterval(updateAgenda, 15000);
+
+// agenda collapse/expand
+const agendaToggleBtn = document.getElementById('agendaToggleBtn');
+const agendaContent = document.getElementById('agendaContent');
+if (agendaToggleBtn && agendaContent) {
+  agendaToggleBtn.addEventListener('click', () => {
+    agendaContent.classList.toggle('collapsed');
+    agendaToggleBtn.classList.toggle('collapsed');
+  });
+}
 
 // make the nav button work on small screens
 if (menuButton && mainNav) {
