@@ -82,6 +82,7 @@
       /* tighten vertical spacing so there's less space above the text */
       padding:4px 12px;
       pointer-events:auto;
+      z-index:10; /* ensure nav can be placed above on mobile */
     }
     .currentNow .card{
       max-width:1100px;width:100%;border-radius:12px;padding:6px 10px;display:flex;align-items:center;gap:12px
@@ -415,6 +416,8 @@ nav{
     padding:10px 0;
   }
   nav.open{display:flex;}
+    /* make the opened mobile nav render above the sticky current agenda */
+    nav.open{z-index:30;}
   nav a{
     padding:12px 18px;
     border-radius:0;
