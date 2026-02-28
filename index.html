@@ -921,8 +921,8 @@ nav{
     // TODO: Set your voting form link here
     // document.getElementById('voteLink').href = "PASTE_GOOGLE_FORM_LINK_HERE";
 
-//const EVENT_DATE = "2026-03-06"; // YYYY-MM-DD
-const EVENT_DATE = "2026-02-28"; // YYYY-MM-DD
+const EVENT_DATE = "2026-03-06"; // YYYY-MM-DD
+//const EVENT_DATE = "2026-02-28"; // YYYY-MM-DD
 // For testing: set these to a WIDE time window to ensure sticky bar shows
 // Change start to "00:00" and end to "23:59" in the first/last agenda items
 function atTime(hhmm){
@@ -1050,6 +1050,15 @@ function updateAgenda(){
     nextPill.textContent = `NEXT: ${agenda[0].title} (${fmtTime(atTime(agenda[0].start))})`;
     countdownEl.textContent = `Starts in ${msToCountdown(startOfDay - now)}`;
     buildList(-1, 0);
+
+    // show sticky bar with countdown to first item
+    if (currentNowContainer) {
+      currentNowTime.textContent = fmtTime(atTime(agenda[0].start));
+      currentNowTitle.textContent = "Event starts soon";
+      currentNowDesc.textContent = `Starts in ${msToCountdown(startOfDay - now)}`;
+      currentNowPill.textContent = "COMING";
+      currentNowContainer.classList.remove('hidden');
+    }
     return;
   }
 
