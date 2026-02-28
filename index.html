@@ -57,6 +57,8 @@
     .logo{
       height:150px;
       transition: height 0.3s ease;
+      position:relative;
+      z-index:0; /* keep logo beneath the sticky agenda */
     }
 
     /* shrink oversized logo on phones so it doesn’t collide with the sticky bar */
@@ -82,7 +84,7 @@
       /* tighten vertical spacing so there's less space above the text */
       padding:4px 12px;
       pointer-events:auto;
-      z-index:10; /* ensure nav can be placed above on mobile */
+      z-index:60; /* sit above the logo inside the topbar */
     }
     .currentNow .card{
       max-width:1100px;width:100%;border-radius:12px;padding:6px 10px;display:flex;align-items:center;gap:12px
@@ -417,7 +419,7 @@ nav{
   }
   nav.open{display:flex;}
     /* make the opened mobile nav render above the sticky current agenda */
-    nav.open{z-index:30;}
+    nav.open{z-index:300;}
     /* reduce font-size of the sticky current agenda title on small screens */
     .currentNow .title{font-size:16px}
   nav a{
