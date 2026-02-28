@@ -38,6 +38,8 @@
     }
     a{color:inherit}
     .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    /* ensure main content sits fully beneath fixed header + sticky agenda */
+    main.wrap{margin-top:108px;}
     .topbar{
       position:fixed;top:0;left:0;right:0;z-index:20;
       backdrop-filter: blur(10px);
@@ -482,7 +484,6 @@ nav{
       <a href="#resources">Resources</a>
     </nav>
   </div>
-<hr color="#000909">
   <!-- Sticky current agenda -->
   <div id="currentNow" class="currentNow hidden" aria-live="polite">
     <div class="card" id="currentNowCard">
@@ -495,7 +496,6 @@ nav{
     </div>
   </div>
 </header>
-  <hr><br> <hr><br>
   <main class="wrap">
     <!-- HERO -->
     <section id="home" class="hero anchor">
