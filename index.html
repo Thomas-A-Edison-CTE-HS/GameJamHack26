@@ -353,6 +353,44 @@
   gap:10px;
 }
 
+/* utility container for pairing two blocks side-by-side */
+.sideBySide{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  align-items:flex-start;
+}
+@media (max-width:900px){
+  .sideBySide{grid-template-columns:1fr;}
+}
+
+/* small icon inserted into section titles */
+.sectionTitle .headingIcon{
+  height:1.2em;
+  vertical-align:middle;
+  margin-left:6px;
+}
+
+/* graphic that spans full height of a role card */
+.role{
+  position:relative;
+  padding-right:3.5rem; /* leave room for the floated graphic */
+}
+.roleGraphic{
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  width:auto;
+  height:100%;
+  object-fit:contain;
+}
+
+/* internal spacing for text when graphic is present */
+.role h3, .role p, .role .mini{
+  margin-right:calc(3.5rem + 8px);
+}
+
 .agendaItem{
   display:grid;
   grid-template-columns: 140px 1fr;
@@ -552,10 +590,14 @@ nav{
         </p>
         
       </div>
-  <!-- ROLES -->
+    </section> <!-- end #home hero -->
+
+  <!-- pair roles and build-path side by side -->
+  <div class="sideBySide">
+    <!-- ROLES -->
     <section id="roles" class="anchor">
       <div class="sectionTitle">
-        <h2>Roles</h2>
+        <h2>Roles<img src="7.gif" alt="roles icon" class="headingIcon"></h2>
         <div class="hint">Everyone is essential. Roles are about balance, not ranking.</div>
       </div>
 
@@ -563,6 +605,7 @@ nav{
         <div class="card span12">
           <div class="roleGrid">
             <div class="role blue">
+              <img src="12.gif" alt="" class="roleGraphic">
               <h3>Team Captain</h3>
               <p>
                 Keeps the team on track. Makes sure everyone is heard, decisions get made, and the prototype is playable.
@@ -570,6 +613,7 @@ nav{
               <div class="mini"><strong>Focus:</strong> planning, time, teamwork</div>
             </div>
             <div class="role yellow">
+              <img src="14.gif" alt="" class="roleGraphic">
               <h3>Gameplay Architect</h3>
               <p>
                 Defines rules, goals, and core mechanics. Makes sure the game is understandable and fun to playtest.
@@ -577,6 +621,7 @@ nav{
               <div class="mini"><strong>Focus:</strong> mechanics, rules, balance</div>
             </div>
             <div class="role green">
+              <img src="15.gif" alt="" class="roleGraphic">
               <h3>Experience Builder</h3>
               <p>
                 Builds the prototype: board layout, cards, UI, interactions. Turns ideas into something playable fast.
@@ -586,18 +631,25 @@ nav{
           </div>
         </div>
       </div>
+    </section> <!-- end #roles -->
+
+    <!-- build-path panel as its own section -->
+    <section id="buildpath" class="anchor">
+      <div class="card">
+        <h3>Choose your build path</h3>
+        <div class="actions">
+          <a class="btn" href="#build">Tabletop Prototype</a>
+          <a class="btn" href="#templates">Slides Pitch</a>
+          <a class="btn" href="#templates">Website Pitch</a>
+          <a class="btn" href="#templates">Hack a Game (Scratch/App Lab)</a>
+        </div>
+        <p class="mini">Pick ONE path and commit. Your goal is a playable 3–5 minute prototype.</p>
+      </div>
     </section>
-    <div class="divider"></div>
-<h3 style="margin:10px 0 8px">Choose your build path</h3>
-<div class="actions">
-  <a class="btn" href="#build">Tabletop Prototype</a>
-  <a class="btn" href="#templates">Slides Pitch</a>
-  <a class="btn" href="#templates">Website Pitch</a>
-  <a class="btn" href="#templates">Hack a Game (Scratch/App Lab)</a>
-</div>
-<p class="mini">Pick ONE path and commit. Your goal is a playable 3–5 minute prototype.</p>
+  </div> <!-- end sideBySide roles/build-path -->
+
      <!-- Real Agenda -->
-    </section>
+  <div class="sideBySide">
 <section id="agenda" class="anchor">
   <div class="sectionTitle">
     <div style="display:flex;align-items:center;gap:10px">
@@ -619,6 +671,7 @@ nav{
     <div id="agendaDebug" class="small mono" style="margin-top:8px;color:var(--muted)"></div>
   </div>
 </section>
+  </div> <!-- end sideBySide agenda/theme -->
     <!-- THEME -->
     <section id="theme" class="anchor">
       <div class="sectionTitle">
