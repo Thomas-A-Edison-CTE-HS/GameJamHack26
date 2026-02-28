@@ -1053,10 +1053,10 @@ function updateAgenda(){
 
     // show sticky bar with countdown to first item
     if (currentNowContainer) {
-      currentNowTime.textContent = fmtTime(atTime(agenda[0].start));
+      //currentNowTime.textContent = fmtTime(atTime(agenda[0].start));
       currentNowTitle.textContent = "Event starts soon";
       currentNowDesc.textContent = `Starts in ${msToCountdown(startOfDay - now)}`;
-      currentNowPill.textContent = "COMING";
+      currentNowPill.textContent = fmtTime(now); // show clock during countdown
       currentNowContainer.classList.remove('hidden');
     }
     return;
@@ -1123,7 +1123,7 @@ if (nextIdx !== -1) {
       currentNowTime.textContent = `${startFmt}–${endFmt}`;
       currentNowTitle.textContent = item.title;
       currentNowDesc.textContent = item.desc || "";
-      currentNowPill.textContent = "NOW";
+      currentNowPill.textContent = fmtTime(now); // display current time while item is active
       currentNowContainer.classList.remove('hidden');
     } else {
       currentNowContainer.classList.add('hidden');
