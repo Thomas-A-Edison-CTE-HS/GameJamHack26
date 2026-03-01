@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game Jam Team Shuffler (CSV Only)</title>
+
+  <style>
+    :root{
+      --bg-0:#0b0612; --bg-1:#12081f;
+      --card:rgba(255,255,255,0.06);
+      --card-2:rgba(255,255,255,0.09);
+      --border:rgba(255,255,255,0.14);
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.72);
+      --good:rgba(34,197,94,0.18);
+      --warn:rgba(245,158,11,0.18);
+      --err:rgba(239,68,68,0.18);
+      --shadow:0 12px 30px rgba(0,0,0,0.35);
+
+      /* Role tones (tiles) */
+      --role-blue-bg:rgba(59,130,246,0.16);
+      --role-blue-br:rgba(59,130,246,0.32);
+      --role-blue-ac:rgba(147,197,253,0.95);
+
+      --role-yellow-bg:rgba(245,158,11,0.16);
+      --role-yellow-br:rgba(245,158,11,0.34);
+      --role-yellow-ac:rgba(253,230,138,0.95);
+
+      --role-green-bg:rgba(34,197,94,0.16);
+      --role-green-br:rgba(34,197,94,0.32);
+      --role-green-ac:rgba(187,247,208,0.95);
+
+      /* Team table column tint */
+      --col-blue: rgba(59,130,246,0.12);
+      --col-yellow: rgba(245,158,11,0.12);
+      --col-green: rgba(34,197,94,0.12);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0; color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:
+        radial-gradient(1100px 600px at 20% 10%, rgba(192,38,211,0.22), transparent 60%),
+        radial-gradient(900px 520px at 80% 20%, rgba(124,58,237,0.22), transparent 60%),
+        radial-gradient(900px 520px at 50% 90%, rgba(251,113,133,0.14), transparent 60%),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1));
+      min-height:100vh;
+    }
+
+    .container{max-width:1200px;margin:0 auto;padding:22px 18px 40px;}
+    header{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+    h1{margin:0 0 8px;font-size:clamp(22px,3.2vw,34px);letter-spacing:-0.02em;line-height:1.05;}
+    .subtitle{margin-top:6px;color:var(--muted);font-size:14px;max-width:95ch;}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;
+      border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,0.06);
+      box-shadow:var(--shadow);font-size:13px;color:var(--muted);white-space:nowrap;
+    }
+    .badge b{color:var(--text);font-weight:650;}
+
+    .card{
+      background:var(--card);border:1px solid var(--border);border-radius:16px;
+      padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(8px);
+    }
+    .card h2{margin:0 0 8px;font-size:16px;letter-spacing:-0.01em;}
+    .muted{color:var(--muted);font-size:13px;}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;}
+
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+    @media (max-width:980px){.row{grid-template-columns:1fr;}}
+
+    textarea{
+      width:100%;height:240px;border-radius:14px;border:1px solid var(--border);
+      background:rgba(0,0,0,0.25);color:var(--text);padding:12px;outline:none;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+
+    input[type="text"], input[type="number"], select{
+      border-radius:12px;border:1px solid var(--border);
+      background:rgba(0,0,0,0.22);color:var(--text);
+      padding:9px 10px;outline:none;min-height:38px;
+    }
+
+    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+    .controls > div{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+    button{
+      border:1px solid rgba(255,255,255,0.16);
+      background:linear-gradient(135deg, rgba(192,38,211,0.92), rgba(124,58,237,0.92));
+      color:white;border-radius:12px;padding:9px 12px;cursor:pointer;font-weight:650;
+      letter-spacing:0.01em;box-shadow:0 10px 18px rgba(0,0,0,0.25);
+      transition:transform 0.05s ease, filter 0.2s ease;
+    }
+    button:hover{filter:brightness(1.07);}
+    button:active{transform:translateY(1px);}
+    button.secondary{background:rgba(255,255,255,0.07);color:var(--text);}
+
+    .status{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
+      border:1px solid var(--border);background:rgba(255,255,255,0.06);font-size:12px;color:var(--muted);
+    }
+    .pill.ok{background:var(--good);}
+    .pill.warn{background:var(--warn);}
+    .pill.err{background:var(--err);}
+
+    table{
+      width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;
+      border-radius:14px;border:1px solid var(--border);background:rgba(0,0,0,0.18);
+    }
+    th, td{padding:9px 10px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.09);vertical-align:top;}
+    th{
+      text-align:left;color:rgba(255,255,255,0.88);background:rgba(255,255,255,0.06);
+      font-weight:750;position:sticky;top:0;z-index:1;
+    }
+    tr:last-child td{border-bottom:none;}
+
+    /* Teams column color coding */
+    .teams-table th:nth-child(2), .teams-table td:nth-child(2){ background: var(--col-blue); }
+    .teams-table th:nth-child(3), .teams-table td:nth-child(3){ background: var(--col-yellow); }
+    .teams-table th:nth-child(4), .teams-table td:nth-child(4){ background: var(--col-green); }
+    .teams-table th:nth-child(2){ color: rgba(147,197,253,0.98); }
+    .teams-table th:nth-child(3){ color: rgba(253,230,138,0.98); }
+    .teams-table th:nth-child(4){ color: rgba(187,247,208,0.98); }
+
+    .role-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:10px;}
+    @media (max-width:980px){.role-grid{grid-template-columns:1fr;}}
+    .role-card{
+      border-radius:16px;border:1px solid var(--border);padding:12px;box-shadow:var(--shadow);
+      position:relative;overflow:hidden;background:var(--card-2);
+    }
+    .role-card::before{
+      content:"";position:absolute;inset:-2px -2px auto -2px;height:56px;opacity:0.45;
+      filter:blur(10px);pointer-events:none;
+    }
+    .role-card.leader{background:linear-gradient(180deg,var(--role-blue-bg),rgba(255,255,255,0.07));border-color:var(--role-blue-br);}
+    .role-card.leader::before{background:radial-gradient(500px 80px at 30% 20%, rgba(59,130,246,0.55), transparent 60%);}
+    .role-card.designer{background:linear-gradient(180deg,var(--role-yellow-bg),rgba(255,255,255,0.07));border-color:var(--role-yellow-br);}
+    .role-card.designer::before{background:radial-gradient(500px 80px at 30% 20%, rgba(245,158,11,0.55), transparent 60%);}
+    .role-card.builder{background:linear-gradient(180deg,var(--role-green-bg),rgba(255,255,255,0.07));border-color:var(--role-green-br);}
+    .role-card.builder::before{background:radial-gradient(500px 80px at 30% 20%, rgba(34,197,94,0.55), transparent 60%);}
+
+    .role-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;position:relative;z-index:1;}
+    .role-title h3{margin:0;font-size:14px;letter-spacing:-0.01em;}
+    .tag{
+      padding:3px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.15);color:rgba(255,255,255,0.84);white-space:nowrap;position:relative;z-index:1;
+    }
+    .tag.leader{border-color:var(--role-blue-br);color:var(--role-blue-ac);}
+    .tag.designer{border-color:var(--role-yellow-br);color:var(--role-yellow-ac);}
+    .tag.builder{border-color:var(--role-green-br);color:var(--role-green-ac);}
+    .role-card ul{margin:8px 0 0 18px;color:rgba(255,255,255,0.88);font-size:13px;position:relative;z-index:1;}
+    .role-card p{margin:8px 0 0;color:var(--muted);font-size:13px;position:relative;z-index:1;}
+
+    .hint{
+      margin-top:10px;padding:10px 12px;border-radius:14px;border:1px dashed rgba(255,255,255,0.22);
+      background:rgba(0,0,0,0.14);color:var(--muted);font-size:13px;
+    }
+    .hint-quote{
+      text-align:center;font-weight:900;font-size:18px;line-height:1.35;letter-spacing:0.01em;
+      color:rgba(255,255,255,0.95);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Game Jam Team Shuffler</h1>
+        <div class="subtitle">
+          <b>Assign Roles</b> → (optional) <b>Shuffle Roles</b> → <b>Build Teams</b>.
+        </div>
+      </div>
+      <div class="badge">
+        <span>Teams:</span>
+        <b>Leader + Designer + Builder</b>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2>Role Descriptions</h2>
+      <div class="muted">Every role matters in game-making.</div>
+
+      <div class="role-grid">
+        <div class="role-card leader">
+          <div class="role-title">
+            <h3>Leader</h3>
+            <span class="tag leader">Guides the team</span>
+          </div>
+          <ul>
+            <li>Keep the team moving and on time</li>
+            <li>Make sure everyone is heard</li>
+            <li>Help the team decide what to try next</li>
+          </ul>
+          <p><b>Leaders do not</b> need to be the best coder or speaker.</p>
+        </div>
+
+        <div class="role-card designer">
+          <div class="role-title">
+            <h3>Designer</h3>
+            <span class="tag designer">Shapes the experience</span>
+          </div>
+          <ul>
+            <li>Think about the player’s experience</li>
+            <li>Help shape rules, story, and choices</li>
+            <li>Ask: “Does this make sense to a player?”</li>
+          </ul>
+          <p><b>Designers do not</b> need to be “good at art.”</p>
+        </div>
+
+        <div class="role-card builder">
+          <div class="role-title">
+            <h3>Builder</h3>
+            <span class="tag builder">Makes it playable</span>
+          </div>
+          <ul>
+            <li>Help turn ideas into a playable prototype</li>
+            <li>Set up the game (paper or digital)</li>
+            <li>Test things and notice what breaks</li>
+          </ul>
+          <p><b>Builders do not</b> need to know how to code.</p>
+        </div>
+      </div>
+
+      <div class="hint">
+        <div class="hint-quote">“Great games need all three roles. Today is about testing ideas, not perfection.”</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- INPUT -->
+      <div class="card">
+        <h2>1) Paste CSV</h2>
+        <div class="muted">
+          Required format:
+          <span class="mono">name,score</span>.
+          Score can be any number (higher = more likely to be a Leader tier).
+        </div>
+
+        <textarea id="csvInput" placeholder="name,score
+Jane Doe,18
+John Smith,12"></textarea>
+
+        <div class="controls">
+          <button class="secondary" id="loadSample">Load Sample (90)</button>
+          <button class="secondary" id="clearAll">Clear</button>
+        </div>
+
+        <div class="controls" style="margin-top:12px;">
+          <div>
+            <label><b>Split mode:</b></label>
+            <select id="splitMode">
+              <option value="fixed30">Fixed 30 / 30 / 30</option>
+              <option value="thirds">Automatic thirds</option>
+            </select>
+          </div>
+
+          <div>
+            <label><b>Seed (optional):</b></label>
+            <input id="seedInput" type="text" placeholder="e.g., March6_2026"/>
+          </div>
+
+          <div>
+            <label><b>Max teams:</b></label>
+            <input id="maxTeams" type="number" min="1" max="60" value="30" style="width:92px;"/>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="assignRolesBtn">Assign Roles</button>
+          <button id="shuffleBtn">Shuffle Roles</button>
+          <button id="makeTeamsBtn">Build Teams</button>
+        </div>
+
+        <div class="status" id="status">
+          <span class="pill warn">Paste CSV and click Assign Roles.</span>
+        </div>
+      </div>
+
+      <!-- TEAMS -->
+      <div class="card">
+        <h2>2) Teams</h2>
+        <div class="muted">Teams will appear here. Export or copy once ready.</div>
+
+        <div class="controls" style="margin-top:10px;">
+          <button id="exportCsvBtn">Export Teams CSV</button>
+          <button id="copyTeamsBtn" class="secondary">Copy Teams</button>
+        </div>
+
+        <div id="teamsWrap"></div>
+        <div id="extrasWrap" style="margin-top:10px;"></div>
+      </div>
+    </div>
+
+    <!-- ROSTER -->
+    <div class="card" style="margin-top:16px;">
+      <h2>Roster</h2>
+      <div id="summary" class="muted">No roster yet.</div>
+      <div id="rosterWrap"></div>
+    </div>
+  </div>
+
+<script>
+  // ========= DOM =========
+  const csvInput = document.getElementById('csvInput');
+  const splitMode = document.getElementById('splitMode');
+  const seedInput = document.getElementById('seedInput');
+  const maxTeamsInput = document.getElementById('maxTeams');
+
+  const statusEl = document.getElementById('status');
+  const summaryEl = document.getElementById('summary');
+  const rosterWrap = document.getElementById('rosterWrap');
+  const teamsWrap = document.getElementById('teamsWrap');
+  const extrasWrap = document.getElementById('extrasWrap');
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[m]));
+  }
+
+  function setStatus(msg, kind){
+    const cls = kind === 'ok' ? 'ok' : (kind === 'err' ? 'err' : 'warn');
+    statusEl.innerHTML = `<span class="pill ${cls}">${escapeHtml(msg)}</span>`;
+  }
+
+  function toNumberSafe(v){
+    if (v === null || v === undefined) return null;
+    const s = String(v).trim();
+    if (!s) return null;
+    const n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  // ========= CSV parsing (handles quoted commas) =========
+  function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let field = '';
+    let inQuotes = false;
+
+    function endField(){ row.push(field); field=''; }
+    function endRow(){
+      if (row.length === 1 && row[0].show === '') { row = []; return; }
+      rows.push(row); row=[];
+    }
+
+    for (let i=0; i<text.length; i++){
+      const c = text[i];
+      if (c === '"'){
+        if (inQuotes && text[i+1] === '"'){ field += '"'; i++; continue; }
+        inQuotes = !inQuotes; continue;
+      }
+      if (!inQuotes && c === ','){ endField(); continue; }
+      if (!inQuotes && c === '\n'){ endField(); endRow(); continue; }
+      if (!inQuotes && c === '\r'){ continue; }
+      field += c;
+    }
+    endField(); endRow();
+
+    if (!rows.length) return { headers: [], data: [] };
+
+    const headers = rows[0].map(h => (h || '').trim().toLowerCase());
+    const data = rows.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, idx) => obj[h] = (r[idx] ?? '').trim());
+      return obj;
+    });
+    return { headers, data };
+  }
+
+  // ========= Seeded shuffle =========
+  function seedToUint32(seedStr){
+    if (!seedStr) return null;
+    let h = 2166136261;
+    for (let i=0; i<seedStr.length; i++){
+      h ^= seedStr.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function mulberry32(a){
+    return function(){
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffleInPlace(arr, rng){
+    for (let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(rng() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+
+  // ========= Export / Copy =========
+  function downloadText(filename, text){
+    const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  async function copyToClipboard(text){
+    await navigator.clipboard.writeText(text);
+  }
+  function csvCell(v){
+    const s = String(v ?? '');
+    if (/[",\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+    return s;
+  }
+
+  // ========= State =========
+  let roster = [];
+  let tiers = { top: [], mid: [], bot: [], extra: [] };
+  let teams = [];
+
+  function buildTiersFromRoster(){
+    tiers = { top: [], mid: [], bot: [], extra: [] };
+    const n = roster.length;
+
+    if (splitMode.value === 'fixed30'){
+      tiers.top = roster.slice(0, 30);
+      tiers.mid = roster.slice(30, 60);
+      tiers.bot = roster.slice(60, 90);
+      tiers.extra = roster.slice(90);
+      return;
+    }
+
+    const base = Math.floor(n / 3);
+    const remainder = n - base * 3;
+    const topSize = base + (remainder >= 1 ? 1 : 0);
+    const midSize = base + (remainder >= 2 ? 1 : 0);
+    const botSize = base;
+
+    tiers.top = roster.slice(0, topSize);
+    tiers.mid = roster.slice(topSize, topSize + midSize);
+    tiers.bot = roster.slice(topSize + midSize, topSize + midSize + botSize);
+    tiers.extra = roster.slice(topSize + midSize + botSize);
+  }
+
+  function renderRoster(){
+    if (!roster.length){
+      summaryEl.textContent = 'No roster yet.';
+      rosterWrap.innerHTML = '<p class="muted">Paste CSV and click Assign Roles.</p>';
+      return;
+    }
+
+    const possibleTeams = Math.min(tiers.top.length, tiers.mid.length, tiers.bot.length);
+    summaryEl.innerHTML = `
+      Students loaded: <b>${roster.length}</b> |
+      Leaders: <b>${tiers.top.length}</b>,
+      Designers: <b>${tiers.mid.length}</b>,
+      Builders: <b>${tiers.bot.length}</b>,
+      Extra: <b>${tiers.extra.length}</b> |
+      Possible teams: <b>${possibleTeams}</b>
+    `;
+
+    const rows = roster.slice(0, 200).map(s => `
+      <tr>
+        <td>${escapeHtml(s.name)}</td>
+        <td>${Number.isFinite(s.score) ? s.score : ''}</td>
+        <td>${escapeHtml(s.role || '')}</td>
+      </tr>
+    `).join('');
+
+    rosterWrap.innerHTML = `
+      <table>
+        <thead><tr><th>Name</th><th>Score</th><th>Role</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="muted">Showing first 200 students.</div>
+    `;
+  }
+
+  function renderTeams(){
+    if (!teams.length){
+      teamsWrap.innerHTML = '<p class="muted">No teams yet. Click Shuffle Roles (optional) then Build Teams.</p>';
+      extrasWrap.innerHTML = '';
+      return;
+    }
+
+    const rows = teams.map(t => `
+      <tr>
+        <td>${t.team}</td>
+        <td>${escapeHtml(t.leader.name)}</td>
+        <td>${escapeHtml(t.designer.name)}</td>
+        <td>${escapeHtml(t.builder.name)}</td>
+      </tr>
+    `).join('');
+
+    teamsWrap.innerHTML = `
+      <table class="teams-table">
+        <thead><tr><th>Team</th><th>Leader</th><th>Designer</th><th>Builder</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+
+    const teamCount = teams.length;
+    const unassigned = [
+      ...tiers.top.slice(teamCount).map(s => ({name:s.name, role:'Leader'})),
+      ...tiers.mid.slice(teamCount).map(s => ({name:s.name, role:'Designer'})),
+      ...tiers.bot.slice(teamCount).map(s => ({name:s.name, role:'Builder'})),
+      ...tiers.extra.map(s => ({name:s.name, role:'Extra'}))
+    ];
+
+    if (!unassigned.length){
+      extrasWrap.innerHTML = `<div class="muted"><b>Unassigned:</b> none</div>`;
+    } else {
+      const list = unassigned.slice(0, 60).map(s =>
+        `<li>${escapeHtml(s.name)} <span class="pill">${escapeHtml(s.role)}</span></li>`
+      ).join('');
+      extrasWrap.innerHTML = `
+        <div class="muted"><b>Unassigned students:</b> ${unassigned.length} (showing up to 60)</div>
+        <ul>${list}</ul>
+      `;
+    }
+  }
+
+  // ========= Actions =========
+  function assignRoles(){
+    const { headers, data } = parseCSV(csvInput.value || '');
+    if (!headers.includes('name') || !headers.includes('score')){
+      setStatus('CSV must include headers: name, score (first row).', 'err');
+      return;
+    }
+
+    const cleaned = [];
+    let uid = 1;
+    for (const d of data){
+      const name = (d.name || '').trim();
+      const score = toNumberSafe(d.score);
+      if (!name || score === null) continue;
+      cleaned.push({ __uid: uid++, name, score, role:'' });
+    }
+
+    if (cleaned.length < 3){
+      setStatus('Need at least 3 valid rows with name + numeric score.', 'err');
+      return;
+    }
+
+    cleaned.sort((a,b) => (b.score - a.score) || a.name.localeCompare(b.name));
+    roster = cleaned;
+
+    buildTiersFromRoster();
+    tiers.top.forEach(s => s.role = 'Leader');
+    tiers.mid.forEach(s => s.role = 'Designer');
+    tiers.bot.forEach(s => s.role = 'Builder');
+    tiers.extra.forEach(s => s.role = 'Extra');
+
+    teams = [];
+    renderRoster();
+    renderTeams();
+
+    const possibleTeams = Math.min(tiers.top.length, tiers.mid.length, tiers.bot.length);
+    setStatus(`Assigned roles for ${roster.length} students. Possible teams: ${possibleTeams}.`, 'ok');
+  }
+
+  function shuffleRoles(){
+    if (!roster.length){ setStatus('Assign roles first.', 'warn'); return; }
+
+    buildTiersFromRoster();
+    const seed = seedToUint32(seedInput.value.trim());
+    const rng = seed === null ? Math.random : mulberry32(seed);
+
+    shuffleInPlace(tiers.top, rng);
+    shuffleInPlace(tiers.mid, rng);
+    shuffleInPlace(tiers.bot, rng);
+
+    tiers.top.forEach(s => s.role = 'Leader');
+    tiers.mid.forEach(s => s.role = 'Designer');
+    tiers.bot.forEach(s => s.role = 'Builder');
+    tiers.extra.forEach(s => s.role = 'Extra');
+
+    teams = [];
+    renderRoster();
+    renderTeams();
+
+    setStatus('Shuffled within roles. Click Build Teams.', 'ok');
+  }
+
+  function buildTeams(){
+    if (!roster.length){ setStatus('Assign roles first.', 'warn'); return; }
+
+    const possibleTeams = Math.min(tiers.top.length, tiers.mid.length, tiers.bot.length);
+    const maxTeams = Math.max(1, Math.min(Number(maxTeamsInput.value || 30), 60));
+    const teamCount = Math.min(possibleTeams, maxTeams);
+
+    if (teamCount < 1){
+      setStatus('Not enough students in roles to form teams.', 'err');
+      teams = [];
+      renderTeams();
+      return;
+    }
+
+    teams = [];
+    for (let i=0; i<teamCount; i++){
+      teams.push({ team: i+1, leader: tiers.top[i], designer: tiers.mid[i], builder: tiers.bot[i] });
+    }
+
+    renderTeams();
+    setStatus(`Built ${teams.length} teams.`, 'ok');
+  }
+
+  function exportTeamsCSV(){
+    if (!teams.length){ setStatus('Build teams first.', 'warn'); return; }
+    const lines = ['team,leader,designer,builder'];
+    for (const t of teams){
+      lines.push([t.team, csvCell(t.leader.name), csvCell(t.designer.name), csvCell(t.builder.name)].join(','));
+    }
+    downloadText('gamejam_teams.csv', lines.join('\n'));
+    setStatus('Exported teams CSV.', 'ok');
+  }
+
+  async function copyTeams(){
+    if (!teams.length){ setStatus('Build teams first.', 'warn'); return; }
+    const text = teams.map(t => `Team ${t.team}: ${t.leader.name} | ${t.designer.name} | ${t.builder.name}`).join('\n');
+    try{ await copyToClipboard(text); setStatus('Copied teams to clipboard.', 'ok'); }
+    catch { setStatus('Could not copy (browser permission). Use Export Teams CSV.', 'warn'); }
+  }
+
+  function clearAll(){
+    csvInput.value = '';
+    roster = [];
+    tiers = { top: [], mid: [], bot: [], extra: [] };
+    teams = [];
+    renderRoster();
+    renderTeams();
+    setStatus('Cleared. Paste CSV and click Assign Roles.', 'warn');
+  }
+
+  function loadSample90(){
+    const lines = ['name,score'];
+    const first = ["Aaliyah","Brandon","Carlos","Dina","Evan","Fatima","Gabe","Hana","Imani","Jaden","Kiara","Luis","Maya","Nina","Omar","Priya","Quentin","Rosa","Sam","Tariq"];
+    const last  = ["Johnson","Smith","Garcia","Martinez","Lee","Brown","Williams","Davis","Rodriguez","Wilson"];
+    for (let i=1; i<=90; i++){
+      const name = `${first[i % first.length]} ${last[(i * 3) % last.length]}`;
+      const score = 5 + ((i * 7) % 16);
+      lines.push(`${name},${score}`);
+    }
+    csvInput.value = lines.join('\n');
+    setStatus('Sample (90 CSV) loaded. Click Assign Roles.', 'warn');
+  }
+
+  // ========= Wire up =========
+  document.getElementById('assignRolesBtn').addEventListener('click', assignRoles);
+  document.getElementById('shuffleBtn').addEventListener('click', shuffleRoles);
+  document.getElementById('makeTeamsBtn').addEventListener('click', buildTeams);
+  document.getElementById('exportCsvBtn').addEventListener('click', exportTeamsCSV);
+  document.getElementById('copyTeamsBtn').addEventListener('click', copyTeams);
+  document.getElementById('clearAll').addEventListener('click', clearAll);
+  document.getElementById('loadSample').addEventListener('click', loadSample90);
+
+  // initial
+  renderRoster();
+  renderTeams();
+</script>
+</body>
+</html>

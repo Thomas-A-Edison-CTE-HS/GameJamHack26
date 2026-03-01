@@ -290,6 +290,17 @@
       font-size:14px;
       line-height:1.35;
     }
+    .floatImage{
+  float: right;
+  width: 180px;       /* control size */
+  margin: 0 0 10px 15px;
+  border-radius: 12px;
+}
+.partsCard::after {
+  content: "";
+  display: block;
+  clear: both;
+}
     .footer{
       padding:22px 0 28px;
       color:var(--muted);
@@ -806,7 +817,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
 
       <div class="grid">
         <div class="card span6">
-          <h3>The 6 Parts of a Game</h3>
+          <h3>The 6 Parts of a Game</h3> <img src="20.png" alt="" class="floatImage" >
           <ul class="list">
             <li><strong>Space:</strong> Where does the game take place?</li>
             <li><strong>Goal:</strong> How do you win?</li>
@@ -815,7 +826,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
             <li><strong>Rules:</strong> What can/can’t you do?</li>
             <li><strong>Challenge:</strong> What makes it hard?</li>
           </ul>
-          
+         
           <div class="tagrow">
             <span class="tag">Keep it simple</span>
             <span class="tag">Make trade-offs</span>
