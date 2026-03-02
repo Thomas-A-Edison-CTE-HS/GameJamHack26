@@ -562,9 +562,7 @@ nav{
       <a href="#theme">Theme</a>
       <a href="#roles">Roles</a>
       <a href="#toolkit">Toolkit</a>
-      <a href="#build">Build Flow</a>
       <a href="#gallery">Gallery Walk</a>
-      <a href="#templates">Templates</a>
       <a href="#resources">Resources</a>
     </nav>
   </div>
@@ -639,46 +637,31 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
         
       </div>
     </section> <!-- end #home hero -->
+  <!-- Real Agenda -->
+  <div class="sideBySide">
+<section id="agenda" class="anchor">
+  <div class="sectionTitle">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="agendaToggleBtn collapsed" id="agendaToggleBtn" aria-label="Toggle agenda" aria-expanded="false">▼</button>
+      <h2>Today's Agenda</h2>
+    </div>
+    <div class="hint" id="agendaHint">—</div>
+    <div class="hint">Stay focused. Build. Playtest. Iterate.</div>
+  </div>
 
-  <!-- ROLES -->
-    <section id="roles" class="anchor">
-      <div class="sectionTitle"><div class="hint">
-        <h2>Team Roles<img src="7.gif" alt="roles icon" class="headingIcon"></h2>
-       <div style="text-align: right;"> Everyone is essential. Roles are about balance, not ranking.</div>
-      </div>
-      </div>
-      <div class="grid">
-        <div class="card span12">
-          <div class="roleGrid">
-            <div class="role blue">
-              <img src="12.gif" alt="" class="roleGraphic">
-              <h3>Team Captain</h3>
-              <p>
-                Keeps the team on track. Makes sure everyone is heard, decisions get made, and the prototype is playable.
-              </p>
-              <div class="mini"><strong>Focus:</strong> planning, time, teamwork</div>
-            </div>
-            <div class="role yellow">
-              <img src="14.gif" alt="" class="roleGraphic">
-              <h3>Gameplay Architect</h3>
-              <p>
-                Defines rules, goals, and core mechanics. Makes sure the game is understandable and fun to playtest.
-              </p>
-              <div class="mini"><strong>Focus:</strong> mechanics, rules, balance</div>
-            </div>
-            <div class="role green">
-              <img src="15.gif" alt="" class="roleGraphic">
-              <h3>UX Builder</h3>
-              <p>
-                Builds the prototype: board layout, cards, UI, interactions. Turns ideas into something playable fast.
-              </p>
-              <div class="mini"><strong>Focus:</strong> building, iteration, clarity</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> <!-- end #roles -->
-     
+  <div class="card agendaContent collapsed" id="agendaContent">
+    <div class="agendaStatus">
+      <div class="pill" id="nowPill">NOW: —</div>
+      <div class="pill pillAlt" id="nextPill">NEXT: —</div>
+      <div class="countdown" id="countdown">Starts soon…</div>
+    </div>
+
+    <div class="agendaList" id="agendaList" aria-live="polite"></div>
+    <div id="agendaDebug" class="small mono" style="margin-top:8px;color:var(--muted)"></div>
+  </div>
+</section>
+  </div> <!-- end sideBySide agenda/theme -->
+
     <!-- THEME -->
     <section id="theme" class="anchor">
       <div class="sectionTitle">
@@ -750,77 +733,46 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
         </div>
       </div>
     </section>
-
-  <!-- Real Agenda -->
-  <div class="sideBySide">
-<section id="agenda" class="anchor">
-  <div class="sectionTitle">
-    <div style="display:flex;align-items:center;gap:10px">
-      <button class="agendaToggleBtn collapsed" id="agendaToggleBtn" aria-label="Toggle agenda" aria-expanded="false">▼</button>
-      <h2>Today's Agenda</h2>
-    </div>
-    <div class="hint" id="agendaHint">—</div>
-    <div class="hint">Stay focused. Build. Playtest. Iterate.</div>
-  </div>
-
-  <div class="card agendaContent collapsed" id="agendaContent">
-    <div class="agendaStatus">
-      <div class="pill" id="nowPill">NOW: —</div>
-      <div class="pill pillAlt" id="nextPill">NEXT: —</div>
-      <div class="countdown" id="countdown">Starts soon…</div>
-    </div>
-
-    <div class="agendaList" id="agendaList" aria-live="polite"></div>
-    <div id="agendaDebug" class="small mono" style="margin-top:8px;color:var(--muted)"></div>
-  </div>
-</section>
-  </div> <!-- end sideBySide agenda/theme -->
-  <!---Templates--->
-<section id="templates" class="anchor">
-  <div class="sectionTitle">
-    <h2>Templates</h2>
-    <div class="hint">Pick one pitch format. Keep it simple and playable.</div>
-  </div>
-
-  <div class="grid">
-    <div class="card span6">
-      <h3>Slide Deck Template (Pitch)</h3> <img src="slide.svg" alt=""style="max-height:50%;" class="floatImage" >
-      <p class="sub">Use this if your team wants to present with slides.</p>
-      <a class="btn primary" href="https://docs.google.com/presentation/d/1q9JEvq0oViXGbnCYfydRYayfL6AG-T0X9hl30n5hMmQ/edit?usp=sharing" target="_blank" rel="noreferrer">
-        Open Slides Template
-      </a>
-      <p class="mini">Make a copy → edit only the bold placeholders.</p>
-    </div>
-
-    <div class="card span6">
-      <h3>Website Pitch Template</h3><img src="22.png" alt=""style="max-height:80%;" class="floatImage" >
-      <p class="sub">Use this if your team wants a simple website to pitch your game.</p>
-      <a class="btn primary" href=" https://github.com/Thomas-A-Edison-CTE-HS/G4C.git" target="_blank" rel="noreferrer">
-        Open Website Template
-      </a>
-      <p class="mini">Make a copy → replace text + add 1 prototype photo.</p>
-    </div>
-
-    <div class="card span6">
-      <h3>Scratch “Hack a Game” Starter</h3><img src="23.png" alt=""style="max-height:50%;" class="floatImage" >
-      <p class="sub">Remix a starter game and add a hunger system: scarcity + trade-off.</p>
-      <a class="btn primary" href="https://scratch.mit.edu/projects/editor/?tutorial=getStarted" target="_blank" rel="noreferrer">
-        Open Scratch Starter
-      </a>
-      <p class="mini">Required: add 1 resource meter + 1 trade-off.</p>
-    </div>
-
-    <div class="card span6">
-      <h3>App Lab Starter</h3><img src="27.png" alt=""style="max-height:50%;" class="floatImage pill primary" >
-      <p class="sub">Use a starter project and reskin it to Outgrow Hunger.</p>
-      <a class="btn primary" href="https://studio.code.org/users/sign_in" target="_blank" rel="noreferrer">
-        Open App Lab Starter
-      </a>
-      <p class="mini">Required: add 1 variable for scarcity + a choice that causes a consequence.</p>
-    </div>
-  </div>
-</section>
-    <!-- TOOLKIT -->
+  <!-- ROLES -->
+    <section id="roles" class="anchor">
+      <div class="sectionTitle"><div class="hint">
+        <h2>Team Roles<img src="7.gif" alt="roles icon" class="headingIcon"></h2>
+       <div style="text-align: right;"> Everyone is essential. Roles are about balance, not ranking.</div>
+      </div>
+      </div>
+      <div class="grid">
+        <div class="card span12">
+          <div class="roleGrid">
+            <div class="role blue">
+              <img src="12.gif" alt="" class="roleGraphic">
+              <h3>Team Captain</h3>
+              <p>
+                Keeps the team on track. Makes sure everyone is heard, decisions get made, and the prototype is playable.
+              </p>
+              <div class="mini"><strong>Focus:</strong> planning, time, teamwork</div>
+            </div>
+            <div class="role yellow">
+              <img src="14.gif" alt="" class="roleGraphic">
+              <h3>Gameplay Architect</h3>
+              <p>
+                Defines rules, goals, and core mechanics. Makes sure the game is understandable and fun to playtest.
+              </p>
+              <div class="mini"><strong>Focus:</strong> mechanics, rules, balance</div>
+            </div>
+            <div class="role green">
+              <img src="15.gif" alt="" class="roleGraphic">
+              <h3>UX Builder</h3>
+              <p>
+                Builds the prototype: board layout, cards, UI, interactions. Turns ideas into something playable fast.
+              </p>
+              <div class="mini"><strong>Focus:</strong> building, iteration, clarity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> <!-- end #roles -->
+     
+ <!-- TOOLKIT -->
     <section id="toolkit" class="anchor">
       <div class="sectionTitle">
         <h2>Toolkit</h2>
@@ -886,8 +838,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
           </div>
         </div>
       </div>
-    </section>
-
+    </section>  
     <!-- BUILD FLOW -->
     <section id="build" class="anchor">
       <div class="sectionTitle">
@@ -938,6 +889,51 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
         </div>
       </div>
     </section>
+  <!---Templates--->
+<section id="templates" class="anchor">
+  <div class="sectionTitle">
+    <h2>Templates</h2>
+    <div class="hint">Pick one pitch format. Keep it simple and playable.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card span6">
+      <h3>Slide Deck Template (Pitch)</h3> <img src="slide.svg" alt=""style="max-height:50%;" class="floatImage" >
+      <p class="sub">Use this if your team wants to present with slides.</p>
+      <a class="btn primary" href="https://docs.google.com/presentation/d/1q9JEvq0oViXGbnCYfydRYayfL6AG-T0X9hl30n5hMmQ/edit?usp=sharing" target="_blank" rel="noreferrer">
+        Open Slides Template
+      </a>
+      <p class="mini">Make a copy → edit only the bold placeholders.</p>
+    </div>
+
+    <div class="card span6">
+      <h3>Website Pitch Template</h3><img src="22.png" alt=""style="max-height:80%;" class="floatImage" >
+      <p class="sub">Use this if your team wants a simple website to pitch your game.</p>
+      <a class="btn primary" href=" https://github.com/Thomas-A-Edison-CTE-HS/G4C.git" target="_blank" rel="noreferrer">
+        Open Website Template
+      </a>
+      <p class="mini">Make a copy → replace text + add 1 prototype photo.</p>
+    </div>
+
+    <div class="card span6">
+      <h3>Scratch “Hack a Game” Starter</h3><img src="23.png" alt=""style="max-height:50%;" class="floatImage" >
+      <p class="sub">Remix a starter game and add a hunger system: scarcity + trade-off.</p>
+      <a class="btn primary" href="https://scratch.mit.edu/projects/editor/?tutorial=getStarted" target="_blank" rel="noreferrer">
+        Open Scratch Starter
+      </a>
+      <p class="mini">Required: add 1 resource meter + 1 trade-off.</p>
+    </div>
+
+    <div class="card span6">
+      <h3>App Lab Starter</h3><img src="27.png" alt=""style="max-height:50%;" class="floatImage pill primary" >
+      <p class="sub">Use a starter project and reskin it to Outgrow Hunger.</p>
+      <a class="btn primary" href="https://studio.code.org/users/sign_in" target="_blank" rel="noreferrer">
+        Open App Lab Starter
+      </a>
+      <p class="mini">Required: add 1 variable for scarcity + a choice that causes a consequence.</p>
+    </div>
+  </div>
+</section>
 
     <!-- GALLERY WALK -->
     <section id="gallery" class="anchor">
