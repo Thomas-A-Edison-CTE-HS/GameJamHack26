@@ -25,7 +25,18 @@
       --role-green:#67d58a;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{
+      height:100%;
+      :root{ --scrollOffset: 170px; } /* fallback */
+
+html{
+  scroll-padding-top: var(--scrollOffset);
+}
+
+.anchor{
+  scroll-margin-top: var(--scrollOffset);
+}
+    }
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -317,7 +328,10 @@
     }
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
     .small{font-size:12px;color:var(--muted)}
-    .anchor{scroll-margin-top:140px}
+    .anchor{
+      scroll-margin-top:170px;
+    scroll-padding-top: var(--scrollOffset);
+  }
     .toggleRow{
       display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between
     }
@@ -1055,7 +1069,18 @@ const topbar = document.querySelector('.topbar');
 const TIMEZONE_NOTE = (typeof Intl !== 'undefined' && Intl.DateTimeFormat)
   ? Intl.DateTimeFormat().resolvedOptions().timeZone
   : 'Local time';
-
+function setScrollOffset(){
+  const header = document.querySelector('.topbar');
+  if(!header) return;
+  const h = header.getBoundingClientRect().height;
+  document.documentElement.style.setProperty('--scrollOffset', `${Math.ceil(h + 12)}px`);
+}
+window.addEventListener('load', setScrollOffset);
+window.addEventListener('resize', setScrollOffset);
+window.addEventListener('scroll', () => {
+  // header changes height when "shrunk" class toggles
+  setScrollOffset();
+}, { passive:true });
 function fmtTime(d){
   const h = d.getHours();
   const m = String(d.getMinutes()).padStart(2,"0");
