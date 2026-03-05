@@ -615,6 +615,43 @@ details.bioWrap[open] > summary{
 .bioInner{
   padding:16px;
 }
+.bioGrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+margin-top:16px;
+}
+
+@media (max-width:900px){
+.bioGrid{grid-template-columns:1fr;}
+}
+
+.bioCard{
+display:flex;
+gap:12px;
+padding:12px;
+border-radius:14px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.1);
+}
+
+.bioCard img{
+width:64px;
+height:64px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.bioCard h3{
+margin:0;
+font-size:16px;
+}
+
+.bioCard .role{
+font-size:12px;
+color:var(--muted);
+margin:2px 0 6px;
+}
   </style>
 </head>
 
@@ -829,7 +866,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/bernard.jpg">
+        <img src="headshots/8.png">
         <div>
           <h3>Bernard De Wachter</h3>
           <p class="role">CEO • PreviewLabs</p>
@@ -838,7 +875,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/alejandro.jpg">
+        <img src="headshots/16.png">
         <div>
           <h3>Alejandro Rodriguez</h3>
           <p class="role">Technology Leader</p>
@@ -847,7 +884,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/chad.jpg">
+        <img src="headshots/13.png">
         <div>
           <h3>Chad Lavi</h3>
           <p class="role">Technology Professional</p>
@@ -856,7 +893,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/sean.jpg">
+        <img src="headshots/7.png">
         <div>
           <h3>Sean Arnold</h3>
           <p class="role">Director of School Pathways • NYC Public Schools</p>
@@ -865,7 +902,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/steven.jpg">
+        <img src="headshots/6.png">
         <div>
           <h3>Steven Velez</h3>
           <p class="role">CS Implementation Specialist • NYC Public Schools</p>
@@ -874,7 +911,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/megan.jpg">
+        <img src="headshots/5.png">
         <div>
           <h3>Megan Mui</h3>
           <p class="role">Game Design Student • NYU Tisch</p>
@@ -883,7 +920,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/seanna.jpg">
+        <img src="headshots/3.png">
         <div>
           <h3>Seanna Ferguson</h3>
           <p class="role">Game Designer • Urban Arts</p>
@@ -892,7 +929,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/faiza.jpg">
+        <img src="headshots/14.png">
         <div>
           <h3>Faiza Mohamed</h3>
           <p class="role">Integrated Design & Media • NYU Tandon</p>
@@ -901,7 +938,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/teju.jpg">
+        <img src="headshots/15.png">
         <div>
           <h3>Tejaswi “Teju” Mulagada</h3>
           <p class="role">Program Manager & IT Consultant</p>
@@ -910,7 +947,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/marissa.jpg">
+        <img src="headshots/17.png">
         <div>
           <h3>Marissa Harts</h3>
           <p class="role">Games for Change</p>
@@ -919,7 +956,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/mikko.jpg">
+        <img src="headshots/9.png">
         <div>
           <h3>Mikko Castaño</h3>
           <p class="role">Designer • Games for Change</p>
@@ -928,7 +965,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/luna.jpg">
+        <img src="headshots/10.png">
         <div>
           <h3>Luna Ramirez</h3>
           <p class="role">CTE / AP Computer Science Teacher</p>
@@ -937,7 +974,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/sandra.jpg">
+        <img src="headshots/11.png">
         <div>
           <h3>Sandra Cruz</h3>
           <p class="role">CTE Web & App Development Teacher</p>
@@ -946,7 +983,7 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
       </div>
 
       <div class="bioCard">
-        <img src="headshots/bryan.jpg">
+        <img src="headshots/12.png">
         <div>
           <h3>Bryan Deo</h3>
           <p class="role">CTE IT / A+ Web Teacher</p>
