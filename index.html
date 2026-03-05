@@ -555,6 +555,66 @@ nav{
       max-height:0;
       opacity:0;
     }
+    .bioGrid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:12px;
+}
+@media (max-width: 900px){
+  .bioGrid{grid-template-columns:1fr;}
+}
+
+.bioCard{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.03);
+}
+.bioCard img{
+  width:72px;
+  height:72px;
+  border-radius:14px;
+  object-fit:cover;
+  border:1px solid rgba(255,255,255,.12);
+}
+.bioName{
+  font-weight:900;
+  margin:0;
+}
+.bioRole{
+  margin:2px 0 6px;
+  color:var(--muted);
+  font-size:13px;
+}
+.bioText{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.35;
+}
+
+details.bioWrap{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+  overflow:hidden;
+}
+details.bioWrap > summary{
+  cursor:pointer;
+  list-style:none;
+  padding:14px 16px;
+  font-weight:900;
+}
+details.bioWrap > summary::-webkit-details-marker{display:none;}
+details.bioWrap[open] > summary{
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.bioInner{
+  padding:16px;
+}
   </style>
 </head>
 
@@ -744,6 +804,37 @@ Collaborate, build a rapid prototype, and pitch a game that makes an impact.</di
         </div>
       </div>
     </section>
+    <!--GUEST-->
+    <section id="guests" class="anchor">
+  <div class="sectionTitle">
+    <h2>Mentors, Judges & Guest Speakers</h2>
+    <div class="hint">Tap to expand bios.</div>
+  </div>
+
+  <details class="bioWrap">
+    <summary>View Guest Bios</summary>
+    <div class="bioInner">
+      <div class="bioGrid">
+
+        <!-- Example bio card -->
+        <div class="bioCard">
+          <img src="headshots/amy-patterson.jpg" alt="Amy Patterson">
+          <div>
+            <p class="bioName">Amy Patterson</p>
+            <p class="bioRole">Chief Program Officer, Urban Arts</p>
+            <p class="bioText">
+              Driving education and social impact programs that connect creativity and technology to support student access,
+              opportunity, and economic mobility… (shortened)
+            </p>
+          </div>
+        </div>
+
+        <!-- Repeat bioCard blocks for each person -->
+
+      </div>
+    </div>
+  </details>
+</section>
   <!-- ROLES -->
     <section id="roles" class="anchor">
       <div class="sectionTitle">
